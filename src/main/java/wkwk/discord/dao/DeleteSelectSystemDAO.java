@@ -2,6 +2,7 @@ package wkwk.discord.dao;
 
 import wkwk.discord.dao.core.DAOBase;
 import wkwk.discord.parameter.*;
+import wkwk.discord.record.LoggingRecord;
 import wkwk.discord.record.NamePresetRecord;
 import wkwk.discord.record.ReactionRoleRecord;
 import wkwk.discord.record.TempChannelRecord;
@@ -9,6 +10,7 @@ import wkwk.discord.record.TempChannelRecord;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 
 public class DeleteSelectSystemDAO extends DAOBase {
@@ -106,6 +108,43 @@ public class DeleteSelectSystemDAO extends DAOBase {
             e.printStackTrace();
         } finally {
             this.close(preStatement);
+        }
+    }
+
+    public void deleteLogging(ArrayList<LoggingRecord> userLoggingRecords, ArrayList<LoggingRecord> chatLoggingRecords) {
+        this.open();
+        Statement statement = null;
+        String usersSql = null;
+        StringBuilder chatSql = null;
+
+        if (userLoggingRecords.size() > 0) {
+            StringBuilder userIn = new StringBuilder(Long.toString(userLoggingRecords.get(0).getTextChannelId()));
+            for (LoggingRecord record : userLoggingRecords) {
+                userIn.append(",").append(record.getTextChannelId());
+            }
+            usersSql = "DELETE FROM " + DAOParameters.TABLE_LOGGING.getParam() + " WHERE " + LoggingParameters.LOG_TYPE.getParam() + " = 'user' AND " + LoggingParameters.CHANNEL_ID.getParam() + " IN (" + userIn + ")";
+        }
+
+        if (chatLoggingRecords.size() > 0) {
+            String sql = "DELETE FROM " + DAOParameters.TABLE_LOGGING.getParam() + " WHERE " + LoggingParameters.LOG_TYPE.getParam() + " = 'chat' AND " + LoggingParameters.CHANNEL_ID.getParam() + " = " + chatLoggingRecords.get(0).getTextChannelId() + " AND " + LoggingParameters.TARGET_CHANNEL_ID.getParam() + " = " + chatLoggingRecords.get(0).getTargetChannelId();
+            chatSql = new StringBuilder(sql);
+            for (LoggingRecord record : chatLoggingRecords) {
+                if (chatLoggingRecords.indexOf(record) == 0) continue;
+                sql = "DELETE FROM " + DAOParameters.TABLE_LOGGING.getParam() + " WHERE " + LoggingParameters.LOG_TYPE.getParam() + " = 'chat' AND " + LoggingParameters.CHANNEL_ID.getParam() + " = " + record.getTextChannelId() + " AND " + LoggingParameters.TARGET_CHANNEL_ID.getParam() + " = " + record.getTargetChannelId();
+                chatSql.append(";").append(sql);
+            }
+        }
+
+        try {
+            statement = con.createStatement();
+            String sql = (usersSql == null ? "" : usersSql) +
+                    (usersSql == null && chatSql == null ? "" : ";") +
+                    (chatSql == null ? "" : chatSql);
+            statement.execute(sql);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            this.close(statement);
         }
     }
 }

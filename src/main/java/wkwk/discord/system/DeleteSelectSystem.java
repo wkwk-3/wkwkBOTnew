@@ -8,12 +8,14 @@ import org.javacord.api.entity.permission.PermissionType;
 import org.javacord.api.entity.server.Server;
 import org.javacord.api.interaction.SelectMenuInteraction;
 import wkwk.discord.dao.DeleteSelectSystemDAO;
+import wkwk.discord.record.LoggingRecord;
 import wkwk.discord.record.NamePresetRecord;
 import wkwk.discord.record.ReactionRoleRecord;
 import wkwk.discord.record.TempChannelRecord;
 import wkwk.discord.system.core.SystemMaster;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class DeleteSelectSystem extends SystemMaster {
     DeleteSelectSystemDAO dao = new DeleteSelectSystemDAO();
@@ -93,7 +95,7 @@ public class DeleteSelectSystem extends SystemMaster {
                             record.setName(selectMenuOption.getValue());
                             namePresetRecords.add(record);
                         }
-                        dao.deleteNamePreset(namePresetRecords);
+                        dao.deleteNamePreset(namePresetRecords); // 削除実行
                         StringBuilder content = new StringBuilder("'").append(namePresetRecords.get(0).getName()).append("`");
                         for (NamePresetRecord record : namePresetRecords) {
                             if (namePresetRecords.indexOf(record) == 0) continue;
@@ -102,7 +104,27 @@ public class DeleteSelectSystem extends SystemMaster {
                         interaction.createImmediateResponder().setFlags(MessageFlag.EPHEMERAL).setContent("変更候補 " + content + "を削除しました。").respond();
                     }
                     case "removeLogging" -> {
-
+                        if (!isAdmin) {
+                            interaction.createImmediateResponder().setFlags(MessageFlag.EPHEMERAL).setContent("貴方はサーバー管理者ではございません。").respond();
+                            break;
+                        }
+                        ArrayList<LoggingRecord> userLoggingRecords = new ArrayList<>();
+                        ArrayList<LoggingRecord> chatLoggingRecords = new ArrayList<>();
+                        for (SelectMenuOption selectMenuOption : interaction.getChosenOptions()) {
+                            LoggingRecord record = new LoggingRecord();
+                            record.setServerId(server.getId());
+                            String[] values = selectMenuOption.getValue().split(",");
+                            record.setType(values[0]);
+                            record.setTextChannelId(Long.parseLong(values[1]));
+                            if (Objects.equals(values[0], "chat")) {
+                                record.setTargetChannelId(Long.parseLong(values[2]));
+                                chatLoggingRecords.add(record);
+                                continue;
+                            }
+                            userLoggingRecords.add(record);
+                        }
+                        dao.deleteLogging(userLoggingRecords, chatLoggingRecords); // 削除実行
+                        interaction.createImmediateResponder().setFlags(MessageFlag.EPHEMERAL).setContent("選択したログ設定を削除しました。").respond();
                     }
                 }
             }
