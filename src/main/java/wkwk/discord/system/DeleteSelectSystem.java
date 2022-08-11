@@ -13,6 +13,8 @@ import wkwk.discord.record.NamePresetRecord;
 import wkwk.discord.record.ReactionRoleRecord;
 import wkwk.discord.record.TempChannelRecord;
 import wkwk.discord.system.core.SystemMaster;
+import wkwk.discord.system.core.errors.ErrorEmbedCreate;
+import wkwk.discord.system.core.errors.ErrorNumber;
 
 import java.util.ArrayList;
 import java.util.Objects;
@@ -56,7 +58,7 @@ public class DeleteSelectSystem extends SystemMaster {
                 switch (interaction.getCustomId()) {
                     case "removeRole" -> {
                         if (!isAdmin) {
-                            interaction.createImmediateResponder().setFlags(MessageFlag.EPHEMERAL).setContent("貴方はサーバー管理者ではございません。").respond();
+                            interaction.createImmediateResponder().setFlags(MessageFlag.EPHEMERAL).addEmbed(new ErrorEmbedCreate().create(ErrorNumber.NOT_ADMIN)).respond();
                             break;
                         }
                         ReactionRoleRecord roleRecord = new ReactionRoleRecord();
@@ -85,7 +87,7 @@ public class DeleteSelectSystem extends SystemMaster {
                     }
                     case "removeName" -> {
                         if (!isAdmin) {
-                            interaction.createImmediateResponder().setFlags(MessageFlag.EPHEMERAL).setContent("貴方はサーバー管理者ではございません。").respond();
+                            interaction.createImmediateResponder().setFlags(MessageFlag.EPHEMERAL).addEmbed(new ErrorEmbedCreate().create(ErrorNumber.NOT_ADMIN)).respond();
                             break;
                         }
                         ArrayList<NamePresetRecord> namePresetRecords = new ArrayList<>();
@@ -105,7 +107,7 @@ public class DeleteSelectSystem extends SystemMaster {
                     }
                     case "removeLogging" -> {
                         if (!isAdmin) {
-                            interaction.createImmediateResponder().setFlags(MessageFlag.EPHEMERAL).setContent("貴方はサーバー管理者ではございません。").respond();
+                            interaction.createImmediateResponder().setFlags(MessageFlag.EPHEMERAL).addEmbed(new ErrorEmbedCreate().create(ErrorNumber.NOT_ADMIN)).respond();
                             break;
                         }
                         ArrayList<LoggingRecord> userLoggingRecords = new ArrayList<>();

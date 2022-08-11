@@ -24,6 +24,8 @@ import wkwk.discord.dao.SlashCommandDAO;
 import wkwk.discord.record.*;
 import wkwk.discord.system.core.Processing;
 import wkwk.discord.system.core.SystemMaster;
+import wkwk.discord.system.core.errors.ErrorEmbedCreate;
+import wkwk.discord.system.core.errors.ErrorNumber;
 
 import java.awt.*;
 import java.io.IOException;
@@ -152,6 +154,9 @@ public class SlashCommandSystem extends SystemMaster {
                                                             break;
                                                         } else if (dao.getReactMessageSize(messageId) > 25) {
                                                             interaction.createImmediateResponder().setFlags(MessageFlag.EPHEMERAL).setContent("そのメッセージにはすでに25件のリアクションロールが設定されています。").respond();
+                                                            break;
+                                                        } else if (interaction.getOptionByIndex(0).get().getOptionRoleValueByName("role").get().getPosition() < api.getYourself().getRoles(server).get(1).getPosition()) { // 指定したロールが自身より上の場合
+                                                            interaction.createImmediateResponder().setFlags(MessageFlag.EPHEMERAL).setContent("指定したロールがBOTの所持ロールより上位に存在します。\n下記を参照し変更してください。\n`https://www.wkwk.tech/RoleReordering`").respond();
                                                             break;
                                                         }
                                                         Role role = interaction.getOptionByIndex(0).get().getOptionRoleValueByName("role").get();
@@ -399,7 +404,7 @@ public class SlashCommandSystem extends SystemMaster {
                                     if (interaction.getOptionByIndex(0).isPresent()) {
                                         SlashCommandInteractionOption subCommandGroup = interaction.getOptionByIndex(0).get();
                                         if ("delete".equals(subCommandGroup.getName())) {
-                                            if (!dao.CheckIfDeleteTime(interaction.getChannel().get().getId())) {
+                                            if (!dao.checkIfDeleteTime(interaction.getChannel().get().getId())) {
                                                 interaction.createImmediateResponder().setFlags(MessageFlag.EPHEMERAL).setContent("このチャンネルは自動削除が設定されていません。").respond();
                                             } else {
                                                 dao.deleteDeleteTime(interaction.getChannel().get().getId());
@@ -510,7 +515,7 @@ public class SlashCommandSystem extends SystemMaster {
                                 }
                             }
                         } else {
-                            interaction.createImmediateResponder().setFlags(MessageFlag.EPHEMERAL).setContent("そのコマンドはサーバー管理者用です。").respond();
+                            interaction.createImmediateResponder().setFlags(MessageFlag.EPHEMERAL).addEmbed(new ErrorEmbedCreate().create(ErrorNumber.NOT_ADMIN)).respond();
                         }
                     }
                     case "n", "name", "s", "size", "m", "men", "add", "delete", "claim" -> {
@@ -584,6 +589,8 @@ public class SlashCommandSystem extends SystemMaster {
                                 } else {
                                     interaction.createImmediateResponder().setFlags(MessageFlag.EPHEMERAL).setContent("ユーザーを選択してください").respond();
                                 }
+                            } else if (cmd.equals("claim")) {
+                                interaction.createImmediateResponder().setFlags(MessageFlag.EPHEMERAL).setContent("貴方は既に通話管理者です").respond();
                             }
                         } else {
                             if (cmd.equals("claim")) {

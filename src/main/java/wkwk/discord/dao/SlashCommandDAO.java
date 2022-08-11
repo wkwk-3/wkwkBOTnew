@@ -482,7 +482,7 @@ public class SlashCommandDAO extends DAOBase {
         }
     }
 
-    public boolean CheckIfDeleteTime(long channelId) {
+    public boolean checkIfDeleteTime(long channelId) {
         this.open();
         PreparedStatement preStatement = null;
         boolean isCheck = false;

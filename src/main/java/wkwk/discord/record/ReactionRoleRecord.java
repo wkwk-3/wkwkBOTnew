@@ -11,4 +11,6 @@ public class ReactionRoleRecord {
     private String link;
     private ArrayList<Long> roleIds;
     private ArrayList<String> emojis;
+    private long roleId;
+    private String emoji;
 }

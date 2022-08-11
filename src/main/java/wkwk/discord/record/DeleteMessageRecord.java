@@ -8,6 +8,7 @@ import java.util.Date;
 public class DeleteMessageRecord {
     private long serverId;
     private long messageId;
+    private String messageLink;
     private Date deleteDate;
     private long textChannelId;
 

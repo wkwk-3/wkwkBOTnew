@@ -61,12 +61,13 @@ public class AutoDeleteRegisterDAO extends DAOBase {
         this.open();
         PreparedStatement preStatement = null;
         try {
-            String sql = "INSERT INTO " + DAOParameters.TABLE_DELETE_MESSAGES.getParam() + " VALUES (?,?,?,?)";
+            String sql = "INSERT INTO " + DAOParameters.TABLE_DELETE_MESSAGES.getParam() + " VALUES (?,?,?,?,?)";
             preStatement = con.prepareStatement(sql);
             preStatement.setLong(1, deleteMessageRecord.getServerId());
             preStatement.setLong(2, deleteMessageRecord.getMessageId());
-            preStatement.setString(3, new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(deleteMessageRecord.getDeleteDate()));
-            preStatement.setLong(4, deleteMessageRecord.getTextChannelId());
+            preStatement.setString(3, deleteMessageRecord.getMessageLink());
+            preStatement.setString(4, new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(deleteMessageRecord.getDeleteDate()));
+            preStatement.setLong(5, deleteMessageRecord.getTextChannelId());
             preStatement.execute();
         } catch (SQLException e) {
             e.printStackTrace();

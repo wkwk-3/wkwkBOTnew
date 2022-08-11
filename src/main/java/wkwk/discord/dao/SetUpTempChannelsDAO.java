@@ -9,8 +9,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class SetUpDAO extends DAOBase {
-
+public class SetUpTempChannelsDAO extends DAOBase {
     public void updateServerData(ServerDataRecord record) {
         this.open();
         PreparedStatement preStatement = null;
@@ -63,5 +62,44 @@ public class SetUpDAO extends DAOBase {
             this.close(preStatement);
         }
         return record;
+    }
+
+    public boolean checkIfTempChannelData(long id) {
+        this.open();
+        PreparedStatement preStatement = null;
+        boolean isCheck = false;
+        try {
+            String sql =
+                    "SELECT EXISTS(SELECT " + ServerPropertyParameters.MENTION_CHANNEL_ID.getParam()
+                    + " FROM " + DAOParameters.TABLE_SERVER_PROPERTY.getParam() + " WHERE "
+                    + ServerPropertyParameters.SERVER_ID.getParam() + " = ?) AS mention_check,"
+                    + "(SELECT " + ServerPropertyParameters.FIRST_CHANNEL_ID.getParam()
+                    + " FROM " + DAOParameters.TABLE_SERVER_PROPERTY.getParam() + " WHERE "
+                    + ServerPropertyParameters.SERVER_ID.getParam() + " = ?) AS first_check,"
+                    + "(SELECT " + ServerPropertyParameters.VOICE_CATEGORY_ID.getParam()
+                    + " FROM " + DAOParameters.TABLE_SERVER_PROPERTY.getParam() + " WHERE "
+                    + ServerPropertyParameters.SERVER_ID.getParam() + " = ?) AS voice_check,"
+                    + "(SELECT " + ServerPropertyParameters.TEXT_CATEGORY_ID.getParam()
+                    + " FROM " + DAOParameters.TABLE_SERVER_PROPERTY.getParam() + " WHERE "
+                    + ServerPropertyParameters.SERVER_ID.getParam() + " = ?) AS text_check";
+            preStatement = con.prepareStatement(sql);
+            preStatement.setLong(1, id);
+            preStatement.setLong(2, id);
+            preStatement.setLong(3, id);
+            preStatement.setLong(4, id);
+            ResultSet rs = preStatement.executeQuery();
+            while (rs.next()) {
+                boolean mentionCheck = rs.getBoolean("mention_check");
+                boolean firstCheck = rs.getBoolean("first_check");
+                boolean voiceCheck = rs.getBoolean("voice_check");
+                boolean textCheck = rs.getBoolean("text_check");
+                isCheck = mentionCheck || firstCheck || voiceCheck || textCheck;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            this.close(preStatement);
+        }
+        return isCheck;
     }
 }

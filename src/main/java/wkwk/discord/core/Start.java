@@ -23,6 +23,8 @@ public class Start {
         new AutoDeleteRunSystem();
         new WatchingSystem();
         new DeleteSelectSystem();
+        new ReactionRoleSystem();
+        // new testSystem();
         System.out.println(new BotInfoSystem().getInviteUrl(new PermissionsBuilder().setAllowed(PermissionType.ADMINISTRATOR).build()));
 
         try {

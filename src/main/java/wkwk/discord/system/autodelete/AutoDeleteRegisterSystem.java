@@ -30,6 +30,7 @@ public class AutoDeleteRegisterSystem extends SystemMaster {
                 deleteMessageRecord.setMessageId(event.getMessageId());
                 deleteMessageRecord.setTextChannelId(event.getChannel().getId());
                 deleteMessageRecord.setDeleteDate(calendar.getTime());
+                deleteMessageRecord.setMessageLink(event.getMessageLink().toString());
                 dao.addDeleteMessage(deleteMessageRecord);
             }
         });
