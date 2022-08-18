@@ -23,21 +23,23 @@ public class SetUpTempChannelsSystem extends SystemMaster {
         // セットアップCommand
         api.addSlashCommandCreateListener(event -> {
             SlashCommandInteraction interaction =  event.getSlashCommandInteraction();
-            if (!interaction.getUser().isBot() && interaction.getServer().isPresent() && interaction.getServer().get().hasPermission(interaction.getUser(), PermissionType.ADMINISTRATOR) && interaction.getCommandName().equals("setup")) {
-                if (dao.checkIfTempChannelData(interaction.getServer().get().getId())) {
-                    interaction.createImmediateResponder()
-                            .addComponents(ActionRow.of(
-                                    Button.primary("temp_gene_yes", "YES"),
-                                    Button.danger("temp_gene_no", "NO")))
-                            .setFlags(MessageFlag.EPHEMERAL).setContent("このサーバーはすでに一時通話作成用の要素が、\n一部もしくは全てが登録されています。\n本当に再生成いたしますか？")
-                            .respond();
-                } else {
-                    new TempChannelCreate().create(interaction);
+            if (interaction.getCommandName().equals("setup")) {
+                if (!interaction.getUser().isBot() && interaction.getServer().isPresent() && interaction.getServer().get().hasPermission(interaction.getUser(), PermissionType.ADMINISTRATOR)) {
+                    if (dao.checkIfTempChannelData(interaction.getServer().get().getId())) {
+                        interaction.createImmediateResponder()
+                                .addComponents(ActionRow.of(
+                                        Button.primary("temp_gene_yes", "YES"),
+                                        Button.danger("temp_gene_no", "NO")))
+                                .setFlags(MessageFlag.EPHEMERAL).setContent("このサーバーはすでに一時通話作成用の要素が、\n一部もしくは全てが登録されています。\n本当に再生成いたしますか？")
+                                .respond();
+                    } else {
+                        new TempChannelCreate().create(interaction);
+                    }
+                } else if (interaction.getChannel().isPresent() && !interaction.getChannel().get().getType().isServerChannelType()) {
+                    interaction.createImmediateResponder().setContent("サーバーのみで使用できます。").setFlags(MessageFlag.EPHEMERAL).respond();
+                } else if (!interaction.getServer().get().hasPermission(interaction.getUser(), PermissionType.ADMINISTRATOR)) {
+                    interaction.createImmediateResponder().setFlags(MessageFlag.EPHEMERAL).addEmbed(new ErrorEmbedCreate().create(ErrorNumber.NOT_ADMIN)).respond();
                 }
-            } else if (interaction.getChannel().isPresent() && !interaction.getChannel().get().getType().isServerChannelType()) {
-                interaction.createImmediateResponder().setContent("サーバーのみで使用できます。").setFlags(MessageFlag.EPHEMERAL).respond();
-            } else if (!interaction.getServer().get().hasPermission(interaction.getUser(), PermissionType.ADMINISTRATOR)) {
-                interaction.createImmediateResponder().setFlags(MessageFlag.EPHEMERAL).addEmbed(new ErrorEmbedCreate().create(ErrorNumber.NOT_ADMIN)).respond();
             }
         });
 
@@ -48,12 +50,6 @@ public class SetUpTempChannelsSystem extends SystemMaster {
                     new TempChannelCreate().create(interaction);
                 } else {
                     interaction.createImmediateResponder().setFlags(MessageFlag.EPHEMERAL).addEmbed(new ErrorEmbedCreate().create(ErrorNumber.NOT_ADMIN)).respond();
-                }
-            }
-            switch (interaction.getCustomId()) {
-                case "temp_gene_no", "temp_gene_yes" -> {
-                    interaction.createImmediateResponder().respond();
-                    interaction.getMessage().delete();
                 }
             }
         });
