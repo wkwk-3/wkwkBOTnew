@@ -6,7 +6,7 @@ import lombok.Getter;
 @AllArgsConstructor
 @Getter
 public enum DAOParameters {
-
+    // madeW
     CONNECT_STRING("jdbc:mysql://localhost:3306/WKWK_DISCORD_V2"),
     USER_ID("wkwk_v2"),
     PASS_WORD("horizonLuna_2"),

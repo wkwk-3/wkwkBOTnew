@@ -10,6 +10,7 @@ import java.util.Collections;
 import java.util.List;
 
 public class WkwkSlashCommand extends SystemMaster {
+    // madeW
 
     public void createCommand() {
         System.out.println("ping");

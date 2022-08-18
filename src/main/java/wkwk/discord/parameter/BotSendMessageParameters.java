@@ -6,6 +6,7 @@ import lombok.Getter;
 @AllArgsConstructor
 @Getter
 public enum BotSendMessageParameters {
+    // madeW
     SERVER_ID(ServerPropertyParameters.SERVER_ID.getParam()),
     MESSAGE_ID("MESSAGE_ID"),
     CHANNEL_ID("CHANNEL_ID"),

@@ -36,6 +36,7 @@ import java.util.ArrayList;
 import java.util.concurrent.CompletionException;
 
 public class SlashCommandSystem extends SystemMaster {
+    // madeW
     public SlashCommandSystem() {
         SlashCommandDAO dao = new SlashCommandDAO();
         api.addSlashCommandCreateListener(event ->{

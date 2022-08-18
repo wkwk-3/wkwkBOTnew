@@ -1,6 +1,7 @@
 package wkwk.discord.exception;
 
 public class SystemException extends Exception {
+    // madeW
 
     public SystemException() {
         super();

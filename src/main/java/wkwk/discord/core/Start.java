@@ -12,6 +12,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 public class Start {
+    // madeW
     public static void main(String[] args) {
         new JoinAndLeaveServerSystem();
         new SetUpTempChannelsSystem();

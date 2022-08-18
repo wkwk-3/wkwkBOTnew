@@ -10,6 +10,7 @@ import wkwk.discord.system.core.SystemMaster;
 import java.awt.*;
 
 public class WatchingSystem extends SystemMaster {
+    // madeW
     WatchingSystemDAO dao = new WatchingSystemDAO();
 
     WatchingRecord watchingSetting = dao.getWatchingSetting();

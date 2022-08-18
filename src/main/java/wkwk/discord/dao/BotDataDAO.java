@@ -9,6 +9,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 public class BotDataDAO extends DAOBase {
+    // madeW
     public String BotGetToken() {
         this.open();
         String token = "";

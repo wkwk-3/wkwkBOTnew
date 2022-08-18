@@ -10,7 +10,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class SlashCommandDAO extends DAOBase {
-
+    // madeW
     public void UpDataVoiceCategory(long serverId, long voiceCategoryId) {
         this.open();
         PreparedStatement preStatement = null;

@@ -6,7 +6,7 @@ import lombok.Getter;
 @AllArgsConstructor
 @Getter
 public enum BotDataParameters {
-
+    // madeW
     BOT_TOKEN("BOT_TOKEN"),
     BOT_CLIENT_ID("BOT_CLIENT_ID"),
     CLIENT_SECRET("CLIENT_SECRET"),

@@ -5,6 +5,7 @@ import wkwk.discord.record.ReactionRoleRecord;
 import wkwk.discord.system.core.SystemMaster;
 
 public class ReactionRoleSystem extends SystemMaster {
+    // madeW
     ReactionRoleDAO dao = new ReactionRoleDAO();
     public ReactionRoleSystem() {
         api.addReactionAddListener(reactionAddEvent -> {

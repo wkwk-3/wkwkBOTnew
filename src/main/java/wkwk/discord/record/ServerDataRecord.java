@@ -4,6 +4,7 @@ import lombok.Data;
 
 @Data
 public class ServerDataRecord {
+    // madeW
     private long serverId = -1;
     private long mentionChannelId = -1;
     private long firstChannelId = -1;

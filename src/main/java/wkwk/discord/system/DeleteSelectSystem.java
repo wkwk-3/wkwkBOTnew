@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 public class DeleteSelectSystem extends SystemMaster {
+    // madeW
     DeleteSelectSystemDAO dao = new DeleteSelectSystemDAO();
 
     public DeleteSelectSystem() {

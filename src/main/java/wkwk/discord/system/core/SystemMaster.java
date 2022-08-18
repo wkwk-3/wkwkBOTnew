@@ -5,6 +5,7 @@ import org.javacord.api.DiscordApiBuilder;
 import wkwk.discord.dao.BotDataDAO;
 
 public class SystemMaster {
+    // madeW
     protected static DiscordApi api;
 
     public SystemMaster() {

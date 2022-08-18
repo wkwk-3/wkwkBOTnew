@@ -6,6 +6,7 @@ import org.javacord.api.entity.permission.PermissionsBuilder;
 import org.javacord.api.entity.user.User;
 
 public class Processing {
+    // madeW
 
     public Permissions getUserPermission() {
         return

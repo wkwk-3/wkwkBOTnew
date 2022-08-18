@@ -24,6 +24,7 @@ import wkwk.discord.system.core.SystemMaster;
 import java.util.ArrayList;
 
 public class InfoMessageSystem extends SystemMaster {
+    // madeW
     public InfoMessageSystem() {
         api.addButtonClickListener(event -> {
             ButtonInteraction interaction = event.getButtonInteraction();

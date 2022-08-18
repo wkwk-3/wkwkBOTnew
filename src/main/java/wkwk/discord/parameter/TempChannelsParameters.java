@@ -6,7 +6,7 @@ import lombok.Getter;
 @AllArgsConstructor
 @Getter
 public enum TempChannelsParameters {
-
+    // madeW
     VOICE_CHANNEL_ID("VOICE_CHANNEL_ID"),
     TEXT_CHANNEL_ID("TEXT_CHANNEL_ID"),
     SERVER_ID(ServerPropertyParameters.SERVER_ID.getParam()),

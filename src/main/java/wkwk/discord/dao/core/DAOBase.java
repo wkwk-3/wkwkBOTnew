@@ -5,6 +5,7 @@ import wkwk.discord.parameter.DAOParameters;
 import java.sql.*;
 
 public class DAOBase {
+    // madeW
     public Connection con;
 
     protected void open() {

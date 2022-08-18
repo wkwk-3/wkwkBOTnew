@@ -6,7 +6,7 @@ import lombok.Getter;
 @AllArgsConstructor
 @Getter
 public enum ServerPropertyParameters {
-
+    // madeW
     SERVER_ID("SERVER_ID"),
     MENTION_CHANNEL_ID("MENTION_CHANNEL_ID"),
     FIRST_CHANNEL_ID("FIRST_CHANNEL_ID"),

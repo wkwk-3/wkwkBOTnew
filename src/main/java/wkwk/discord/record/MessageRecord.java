@@ -5,6 +5,7 @@ import org.javacord.api.entity.permission.Role;
 
 @Data
 public class MessageRecord {
+    // madeW
     private long serverId;
     private long messageId;
     private long voiceChannelId;

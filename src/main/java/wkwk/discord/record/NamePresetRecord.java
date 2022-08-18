@@ -4,6 +4,7 @@ import lombok.Data;
 
 @Data
 public class NamePresetRecord {
+    // madeW
     private long serverId;
     private String name;
 }

@@ -1,6 +1,7 @@
 package wkwk.discord.exception;
 
 public class DatabaseException extends Exception {
+    // madeW
 
     public DatabaseException() {
         super();

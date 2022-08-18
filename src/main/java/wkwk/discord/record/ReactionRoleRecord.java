@@ -6,6 +6,7 @@ import java.util.ArrayList;
 
 @Data
 public class ReactionRoleRecord {
+    // madeW
     private long messageId = -1;
     private long serverId;
     private String link;

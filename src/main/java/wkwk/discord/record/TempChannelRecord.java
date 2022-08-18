@@ -4,6 +4,7 @@ import lombok.Data;
 
 @Data
 public class TempChannelRecord {
+    // madeW
     private long voiceChannelId;
     private long textChannelId;
     private long serverId;

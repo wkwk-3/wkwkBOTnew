@@ -14,6 +14,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 
 public class DeleteSelectSystemDAO extends DAOBase {
+    // madeW
     public TempChannelRecord getTempChannelData(long channelId) {
         TempChannelRecord record = new TempChannelRecord();
         this.open();

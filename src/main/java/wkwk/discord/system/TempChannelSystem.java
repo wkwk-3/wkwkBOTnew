@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.concurrent.CompletionException;
 
 public class TempChannelSystem extends SystemMaster {
+    // madeW
     TempChannelDAO dao = new TempChannelDAO();
     public TempChannelSystem() {
         // 一時通話作成

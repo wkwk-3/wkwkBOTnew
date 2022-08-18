@@ -6,6 +6,7 @@ import java.awt.*;
 import java.util.ArrayList;
 
 public class ResultEmbedCreate {
+    // madeW
     public EmbedBuilder create(int errorNum, String contentText) {
         ArrayList<String> content = getContent(errorNum);
         EmbedBuilder embedBuilder = new EmbedBuilder();

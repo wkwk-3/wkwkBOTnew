@@ -6,7 +6,7 @@ import lombok.Getter;
 @AllArgsConstructor
 @Getter
 public enum ReactMessageParameters {
-
+    // madeW
     SERVER_ID(ServerPropertyParameters.SERVER_ID.getParam()),
     TEXT_CHANNEL_ID("TEXT_CHANNEL_ID"),
     MESSAGE_ID("MESSAGE_ID"),

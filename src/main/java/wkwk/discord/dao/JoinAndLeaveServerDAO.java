@@ -7,6 +7,7 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 public class JoinAndLeaveServerDAO extends DAOBase {
+    // madeW
     public void addServerData(long serverId) {
         this.open();
         PreparedStatement preStatement = null;

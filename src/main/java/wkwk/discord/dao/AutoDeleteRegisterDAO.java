@@ -12,6 +12,7 @@ import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 
 public class AutoDeleteRegisterDAO extends DAOBase {
+    // madeW
     public boolean CheckIfDeleteChannel(long channelId) {
         this.open();
         PreparedStatement preStatement = null;

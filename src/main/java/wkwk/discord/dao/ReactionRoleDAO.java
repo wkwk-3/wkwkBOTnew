@@ -10,6 +10,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class ReactionRoleDAO extends DAOBase {
+    // madeW
     public boolean checkIfEmoji(ReactionRoleRecord record) {
         this.open();
         PreparedStatement preStatement = null;

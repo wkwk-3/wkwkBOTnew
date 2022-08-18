@@ -12,6 +12,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class InfoMessageDAO extends DAOBase {
+    // madeW
     public TempChannelRecord getTempChannelData(long channelId) {
         TempChannelRecord record = new TempChannelRecord();
         this.open();

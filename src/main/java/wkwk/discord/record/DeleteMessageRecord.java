@@ -6,6 +6,7 @@ import java.util.Date;
 
 @Data
 public class DeleteMessageRecord {
+    // madeW
     private long serverId;
     private long messageId;
     private String messageLink;

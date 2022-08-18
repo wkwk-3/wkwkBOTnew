@@ -15,6 +15,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class TempChannelDAO extends DAOBase {
+    // madeW
     public long getFirstChannelId(long serverId) {
         this.open();
         PreparedStatement preStatement = null;

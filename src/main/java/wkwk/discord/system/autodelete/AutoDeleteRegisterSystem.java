@@ -9,6 +9,7 @@ import java.util.Calendar;
 import java.util.Date;
 
 public class AutoDeleteRegisterSystem extends SystemMaster {
+    // madeW
     public AutoDeleteRegisterSystem() {
         AutoDeleteRegisterDAO dao = new AutoDeleteRegisterDAO();
         api.addMessageCreateListener(event -> {
