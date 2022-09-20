@@ -2,110 +2,141 @@ CREATE DATABASE WKWK_DISCORD_V2;
 
 USE WKWK_DISCORD_V2;
 
-CREATE TABLE BOT_DATA(
-    BOT_TOKEN TEXT PRIMARY KEY NOT NULL,
-    BOT_CLIENT_ID TEXT,
-    CLIENT_SECRET TEXT,
-    ACCESS_TOKEN TEXT,
-    ACCESS_TOKEN_SECRET TEXT,
-    API_KEY TEXT,
-    API_SECRET_KEY TEXT
+create table BOT_DATA
+(
+    BOT_TOKEN           varchar(100) not null
+        primary key,
+    BOT_CLIENT_ID       text         null,
+    CLIENT_SECRET       text         null,
+    ACCESS_TOKEN        text         null,
+    ACCESS_TOKEN_SECRET text         null,
+    API_KEY             text         null,
+    API_SECRET_KEY      text         null
 );
 
-CREATE TABLE SERVER_PROPERTY (
-    SERVER_ID BIGINT PRIMARY KEY NOT NULL,
-    MENTION_CHANNEL_ID BIGINT,
-    FIRST_CHANNEL_ID BIGINT,
-    VOICE_CATEGORY_ID BIGINT,
-    TEXT_CATEGORY_ID BIGINT,
-    TEMP_BY TINYINT(1) DEFAULT 1,
-    TEXT_BY TINYINT(1) DEFAULT 1,
-    DEFAULT_SIZE INT DEFAULT 0,
-    STEREO_TYPED VARCHAR(100) DEFAULT '&here&/n&text&/n&channel&',
-    DEFAULT_NAME varchar(100) DEFAULT '&user&-Channel'
+create table NAME_PRESET
+(
+    SERVER_ID   bigint not null,
+    NAME_SELECT text   not null
 );
 
-CREATE TABLE TEMP_CHANNELS (
-    VOICE_CHANNEL_ID BIGINT PRIMARY KEY NOT NULL,
-    TEXT_CHANNEL_ID BIGINT NOT NULL,
-    SERVER_ID BIGINT NOT NULL,
-    OWNER_USER_ID BIGINT NOT NULL,
-    INFO_MESSAGE_ID BIGINT NOT NULL,
-    HIDE_BY TINYINT(1) DEFAULT 0,
-    LOCK_BY TINYINT(1) DEFAULT 0,
-    FOREIGN KEY (SERVER_ID) REFERENCES SERVER_PROPERTY(SERVER_ID)
+create table SERVER_PROPERTY
+(
+    SERVER_ID          bigint                                           not null
+        primary key,
+    MENTION_CHANNEL_ID bigint                                           null,
+    FIRST_CHANNEL_ID   bigint                                           null,
+    VOICE_CATEGORY_ID  bigint                                           null,
+    TEXT_CATEGORY_ID   bigint                                           null,
+    TEMP_BY            tinyint(1)   default 1                           null,
+    TEXT_BY            tinyint(1)   default 1                           null,
+    DEFAULT_SIZE       int          default 0                           null,
+    STEREO_TYPED       varchar(100) default '&here&/n&text&/n&channel&' null,
+    DEFAULT_NAME       varchar(100) default '&user&-Channel'            null
 );
 
-CREATE TABLE MENTION_MESSAGES (
-    SERVER_ID BIGINT NOT NULL,
-    MESSAGE_ID BIGINT NOT NULL,
-    TEXT_CHANNEL_ID BIGINT NOT NULL,
-    VOICE_CHANNEL_ID BIGINT NOT NULL,
-    MESSAGE_LINK TEXT,
-    PRIMARY KEY (TEXT_CHANNEL_ID,MESSAGE_ID),
-    FOREIGN KEY (SERVER_ID) REFERENCES SERVER_PROPERTY(SERVER_ID)
+create table BOT_SEND_MESSAGES
+(
+    SERVER_ID    bigint not null,
+    MESSAGE_ID   bigint not null,
+    MESSAGE_LINK text   null,
+    CHANNEL_ID   bigint not null,
+    USER_ID      bigint not null,
+    primary key (SERVER_ID, MESSAGE_ID, CHANNEL_ID, USER_ID),
+    constraint bot_send_messages_ibfk_1
+        foreign key (SERVER_ID) references SERVER_PROPERTY (SERVER_ID)
 );
 
-CREATE TABLE REACT_MESSAGE (
-    SERVER_ID BIGINT PRIMARY KEY NOT NULL,
-    TEXT_CHANNEL_ID BIGINT NOT NULL,
-    MESSAGE_ID BIGINT NOT NULL,
-    MESSAGE_LINK TEXT,
-    FOREIGN KEY (SERVER_ID) REFERENCES SERVER_PROPERTY(SERVER_ID)
+create table DELETE_MESSAGES
+(
+    SERVER_ID       bigint   not null,
+    MESSAGE_ID      bigint   not null,
+    MESSAGE_LINK    text     null,
+    DELETE_TIME     datetime not null,
+    TEXT_CHANNEL_ID bigint   not null,
+    primary key (SERVER_ID, MESSAGE_ID),
+    constraint delete_messages_ibfk_1
+        foreign key (SERVER_ID) references SERVER_PROPERTY (SERVER_ID)
 );
 
-CREATE TABLE REACT_ROLES (
-    MESSAGE_ID BIGINT NOT NULL,
-    ROLE_ID BIGINT NOT NULL,
-    EMOJI VARCHAR(30) NOT NULL,
-    SERVER_ID BIGINT NOT NULL,
-    PRIMARY KEY (MESSAGE_ID,EMOJI),
-    FOREIGN KEY (SERVER_ID) REFERENCES SERVER_PROPERTY(SERVER_ID)
+create table DELETE_TIMES
+(
+    SERVER_ID       bigint     not null
+        primary key,
+    TEXT_CHANNEL_ID bigint     not null,
+    DELETE_TIME     bigint     not null,
+    TIME_UNIT       varchar(1) not null,
+    constraint delete_times_ibfk_1
+        foreign key (SERVER_ID) references SERVER_PROPERTY (SERVER_ID)
 );
 
-CREATE TABLE NAME_PRESET (
-    SERVER_ID BIGINT NOT NULL,
-    NAME_SELECT TEXT NOT NULL
+create table LOGGING
+(
+    SERVER_ID         bigint      not null,
+    CHANNEL_ID        bigint      not null,
+    LOG_TYPE          varchar(15) not null,
+    TARGET_CHANNEL_ID bigint      not null,
+    primary key (SERVER_ID, CHANNEL_ID, LOG_TYPE, TARGET_CHANNEL_ID),
+    constraint logging_ibfk_1
+        foreign key (SERVER_ID) references SERVER_PROPERTY (SERVER_ID)
 );
 
-CREATE TABLE DELETE_TIMES (
-    SERVER_ID BIGINT NOT NULL PRIMARY KEY,
-    TEXT_CHANNEL_ID BIGINT NOT NULL,
-    DELETE_TIME BIGINT NOT NULL,
-    TIME_UNIT VARCHAR(1) NOT NULL,
-    FOREIGN KEY (SERVER_ID) REFERENCES SERVER_PROPERTY(SERVER_ID)
+create table MENTION_MESSAGES
+(
+    SERVER_ID        bigint not null,
+    MESSAGE_ID       bigint not null,
+    TEXT_CHANNEL_ID  bigint not null,
+    VOICE_CHANNEL_ID bigint not null,
+    MESSAGE_LINK     text   null,
+    primary key (TEXT_CHANNEL_ID, MESSAGE_ID),
+    constraint mention_messages_ibfk_1
+        foreign key (SERVER_ID) references SERVER_PROPERTY (SERVER_ID)
 );
 
-CREATE TABLE DELETE_MESSAGES (
-    SERVER_ID BIGINT NOT NULL,
-    MESSAGE_ID BIGINT NOT NULL,
-    MESSAGE_LINK TEXT,
-    DELETE_TIME DATETIME NOT NULL,
-    TEXT_CHANNEL_ID BIGINT NOT NULL,
-    PRIMARY KEY (SERVER_ID,MESSAGE_ID),
-    FOREIGN KEY (SERVER_ID) REFERENCES SERVER_PROPERTY(SERVER_ID)
+create table REACT_MESSAGE
+(
+    SERVER_ID       bigint not null
+        primary key,
+    TEXT_CHANNEL_ID bigint not null,
+    MESSAGE_ID      bigint not null,
+    MESSAGE_LINK    text   null,
+    constraint react_message_ibfk_1
+        foreign key (SERVER_ID) references SERVER_PROPERTY (SERVER_ID)
 );
 
-CREATE TABLE LOGGING (
-    SERVER_ID BIGINT NOT NULL,
-    CHANNEL_ID BIGINT NOT NULL,
-    LOG_TYPE VARCHAR(15) NOT NULL,
-    TARGET_CHANNEL_ID BIGINT NOT NULL,
-    PRIMARY KEY (SERVER_ID,CHANNEL_ID,LOG_TYPE,TARGET_CHANNEL_ID),
-    FOREIGN KEY (SERVER_ID) REFERENCES SERVER_PROPERTY(SERVER_ID)
+create table REACT_ROLES
+(
+    MESSAGE_ID bigint      not null,
+    ROLE_ID    bigint      not null,
+    EMOJI      varchar(30) not null,
+    SERVER_ID  bigint      not null,
+    primary key (MESSAGE_ID, EMOJI),
+    constraint react_roles_ibfk_1
+        foreign key (SERVER_ID) references SERVER_PROPERTY (SERVER_ID)
 );
 
-CREATE TABLE BOT_SEND_MESSAGES (
-    SERVER_ID BIGINT NOT NULL,
-    MESSAGE_ID BIGINT NOT NULL,
-    MESSAGE_LINK TEXT,
-    CHANNEL_ID BIGINT NOT NULL,
-    USER_ID BIGINT NOT NULL,
-    PRIMARY KEY (SERVER_ID,MESSAGE_ID,CHANNEL_ID,USER_ID),
-    FOREIGN KEY (SERVER_ID) REFERENCES SERVER_PROPERTY(SERVER_ID)
+create table TEMP_CHANNELS
+(
+    VOICE_CHANNEL_ID bigint               not null
+        primary key,
+    TEXT_CHANNEL_ID  bigint               not null,
+    SERVER_ID        bigint               not null,
+    OWNER_USER_ID    bigint               not null,
+    INFO_MESSAGE_ID  bigint               not null,
+    HIDE_BY          tinyint(1) default 0 null,
+    LOCK_BY          tinyint(1) default 0 null,
+    constraint temp_channels_ibfk_1
+        foreign key (SERVER_ID) references SERVER_PROPERTY (SERVER_ID)
 );
 
-INSERT INTO BOT_DATA(BOT_TOKEN) VALUES ('OTkxODc1NDA1NTU4NTgzMzc4.GcnYbE.knt7QOhQbbGfkV6ahSHl0WnNlQ4O0yZaIyQwWU');
+create table WATCHING
+(
+    SERVER_ID     bigint null,
+    TEMP_CREATE   bigint null,
+    SLASH_COMMAND bigint null
+);
+
+INSERT INTO BOT_DATA(BOT_TOKEN) VALUES ('0');
 
 CREATE USER 'wkwk_v2' IDENTIFIED BY 'horizonLuna_2';
 GRANT ALL ON WKWK_DISCORD_V2.* TO 'wkwk_v2';

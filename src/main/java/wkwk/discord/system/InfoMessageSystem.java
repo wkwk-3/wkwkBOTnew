@@ -20,6 +20,10 @@ import wkwk.discord.record.ServerDataRecord;
 import wkwk.discord.record.TempChannelRecord;
 import wkwk.discord.system.core.Processing;
 import wkwk.discord.system.core.SystemMaster;
+import wkwk.discord.system.core.errors.ErrorEmbedCreate;
+import wkwk.discord.system.core.errors.ErrorNumber;
+import wkwk.discord.system.core.results.ResultEmbedCreate;
+import wkwk.discord.system.core.results.ResultNumber;
 
 import java.util.ArrayList;
 
@@ -27,6 +31,8 @@ public class InfoMessageSystem extends SystemMaster {
     // madeW
     public InfoMessageSystem() {
         api.addButtonClickListener(event -> {
+            ErrorEmbedCreate errorEmbedCreate = new ErrorEmbedCreate();
+            ResultEmbedCreate resultEmbedCreate = new ResultEmbedCreate();
             ButtonInteraction interaction = event.getButtonInteraction();
             String customId = interaction.getCustomId();
             if (interaction.getServer().isPresent() && interaction.getChannel().isPresent()) {
@@ -36,12 +42,12 @@ public class InfoMessageSystem extends SystemMaster {
                 switch (customId) {
                     case "hide" -> {
                         if (!tempChannelRecord.isExistBy()) {
-                            interaction.createImmediateResponder().setContent("一時テキストチャンネルの中で押してください。").setFlags(MessageFlag.EPHEMERAL).respond();
+                            interaction.createImmediateResponder().addEmbed(errorEmbedCreate.create(ErrorNumber.NOT_TEMP_CHANNEL)).setFlags(MessageFlag.EPHEMERAL).respond();
                             break;
                         }
                         User user = interaction.getUser();
                         if (user.getId() != tempChannelRecord.getOwnerUserId()) {
-                            interaction.createImmediateResponder().setContent("あなたは通話管理者ではありません。").setFlags(MessageFlag.EPHEMERAL).respond();
+                            interaction.createImmediateResponder().addEmbed(errorEmbedCreate.create(ErrorNumber.NOT_MANAGE)).setFlags(MessageFlag.EPHEMERAL).respond();
                             break;
                         }
                         tempChannelRecord.setHideBy(!tempChannelRecord.isHideBy());
@@ -55,19 +61,19 @@ public class InfoMessageSystem extends SystemMaster {
                             }
                             if (tempChannelRecord.isHideBy()) {
                                 server.getVoiceChannelById(tempChannelRecord.getVoiceChannelId()).get().createUpdater().addPermissionOverwrite(server.getEveryoneRole(), permissionsBuilder.setDenied(PermissionType.VIEW_CHANNEL).build()).update();
-                                interaction.createImmediateResponder().setContent("通話を非表示にしました").setFlags(MessageFlag.EPHEMERAL).respond();
+                                interaction.createImmediateResponder().addEmbed(resultEmbedCreate.create(ResultNumber.COMPLETION, "通話を非表示にしました")).setFlags(MessageFlag.EPHEMERAL).respond();
                             } else {
                                 server.getVoiceChannelById(tempChannelRecord.getVoiceChannelId()).get().createUpdater().addPermissionOverwrite(server.getEveryoneRole(), permissionsBuilder.setUnset(PermissionType.VIEW_CHANNEL).build()).update();
-                                interaction.createImmediateResponder().setContent("通話を表示しました").setFlags(MessageFlag.EPHEMERAL).respond();
+                                interaction.createImmediateResponder().addEmbed(resultEmbedCreate.create(ResultNumber.COMPLETION, "通話を表示しました")).setFlags(MessageFlag.EPHEMERAL).respond();
                             }
                         }
                         dao.updateTempData(tempChannelRecord);
-                        interaction.getMessage().createUpdater().setContent(processing.rePressInfoMessage(user, tempChannelRecord.isHideBy(), tempChannelRecord.isLockBy())).applyChanges().join();
+                        interaction.getMessage().createUpdater().setEmbed(processing.rePressInfoMessage(user, tempChannelRecord.isHideBy(), tempChannelRecord.isLockBy())).applyChanges().join();
                     }
                     case "lock" -> {
                         User user = interaction.getUser();
                         if (user.getId() != tempChannelRecord.getOwnerUserId()) {
-                            interaction.createImmediateResponder().setContent("あなたは通話管理者ではありません。").setFlags(MessageFlag.EPHEMERAL).respond();
+                            interaction.createImmediateResponder().addEmbed(errorEmbedCreate.create(ErrorNumber.NOT_MANAGE)).setFlags(MessageFlag.EPHEMERAL).setFlags(MessageFlag.EPHEMERAL).respond();
                             break;
                         }
                         tempChannelRecord.setLockBy(!tempChannelRecord.isLockBy());
@@ -81,19 +87,19 @@ public class InfoMessageSystem extends SystemMaster {
                             }
                             if (tempChannelRecord.isLockBy()) {
                                 server.getVoiceChannelById(tempChannelRecord.getVoiceChannelId()).get().createUpdater().addPermissionOverwrite(server.getEveryoneRole(), permissionsBuilder.setDenied(PermissionType.CONNECT).build()).update();
-                                interaction.createImmediateResponder().setContent("通話をロックにしました").setFlags(MessageFlag.EPHEMERAL).respond();
+                                interaction.createImmediateResponder().addEmbed(resultEmbedCreate.create(ResultNumber.COMPLETION, "通話をロックにしました")).setFlags(MessageFlag.EPHEMERAL).respond();
                             } else {
                                 server.getVoiceChannelById(tempChannelRecord.getVoiceChannelId()).get().createUpdater().addPermissionOverwrite(server.getEveryoneRole(), permissionsBuilder.setUnset(PermissionType.CONNECT).build()).update();
-                                interaction.createImmediateResponder().setContent("通話をアンロックしました").setFlags(MessageFlag.EPHEMERAL).respond();
+                                interaction.createImmediateResponder().addEmbed(resultEmbedCreate.create(ResultNumber.COMPLETION, "通話をアンロックしました")).setFlags(MessageFlag.EPHEMERAL).respond();
                             }
                         }
                         dao.updateTempData(tempChannelRecord);
-                        interaction.getMessage().createUpdater().setContent(processing.rePressInfoMessage(user, tempChannelRecord.isLockBy(), tempChannelRecord.isLockBy())).applyChanges().join();
+                        interaction.getMessage().createUpdater().setEmbed(processing.rePressInfoMessage(user, tempChannelRecord.isLockBy(), tempChannelRecord.isLockBy())).applyChanges().join();
                     }
                     case "name" -> {
                         User user = interaction.getUser();
                         if (user.getId() != tempChannelRecord.getOwnerUserId()) {
-                            interaction.createImmediateResponder().setContent("あなたは通話管理者ではありません。").setFlags(MessageFlag.EPHEMERAL).respond();
+                            interaction.createImmediateResponder().addEmbed(errorEmbedCreate.create(ErrorNumber.NOT_MANAGE)).setFlags(MessageFlag.EPHEMERAL).setFlags(MessageFlag.EPHEMERAL).respond();
                             break;
                         }
                         ArrayList<String> names = dao.getNamePreset(interaction.getServer().get().getId());
@@ -102,10 +108,8 @@ public class InfoMessageSystem extends SystemMaster {
                             for (String name : names) {
                                 selectMenuBuilder.addOption(new SelectMenuOptionBuilder().setLabel(name).setValue(name).build());
                             }
-                            new MessageBuilder()
-                                    .setContent("通話名前変更")
-                                    .addComponents(ActionRow.of(selectMenuBuilder.build())).send(interaction.getChannel().get());
-                            interaction.createImmediateResponder().respond();
+                            interaction.createImmediateResponder().setFlags(MessageFlag.EPHEMERAL).setContent("通話名前変更")
+                                    .addComponents(ActionRow.of(selectMenuBuilder.build())).respond();
                         } else {
                             interaction.createImmediateResponder().setFlags(MessageFlag.EPHEMERAL).setContent("選択肢が存在しません。\n`/set namePreset name:`\n**name:の後**に選択肢に追加したい文字に変更して実行してください").respond();
                         }
@@ -129,7 +133,7 @@ public class InfoMessageSystem extends SystemMaster {
                     }
                     case "size" -> {
                         if (interaction.getUser().getId() != tempChannelRecord.getOwnerUserId()) {
-                            interaction.createImmediateResponder().setContent("あなたは通話管理者ではありません。").setFlags(MessageFlag.EPHEMERAL).respond();
+                            interaction.createImmediateResponder().addEmbed(errorEmbedCreate.create(ErrorNumber.NOT_MANAGE)).setFlags(MessageFlag.EPHEMERAL).setFlags(MessageFlag.EPHEMERAL).respond();
                             break;
                         }
                         SelectMenuBuilder selectMenuBuilder = new SelectMenuBuilder().setCustomId("size").setPlaceholder("変更したい人数を選択してください").setMaximumValues(1).setMinimumValues(1);
@@ -137,15 +141,13 @@ public class InfoMessageSystem extends SystemMaster {
                         for (int n = 2; n < 7; n++) {
                             selectMenuBuilder.addOption(new SelectMenuOptionBuilder().setLabel(Integer.toString(n)).setValue(Integer.toString(n)).build());
                         }
-                        new MessageBuilder()
-                                .setContent("通話人数変更")
-                                .addComponents(ActionRow.of(selectMenuBuilder.build())).send(interaction.getChannel().get());
-                        interaction.createImmediateResponder().respond();
+                        interaction.createImmediateResponder().setFlags(MessageFlag.EPHEMERAL).setContent("通話人数変更")
+                                .addComponents(ActionRow.of(selectMenuBuilder.build())).respond();
                     }
 
                     case "send-recruiting" -> { // 募集送信
                         if (interaction.getUser().getId() != tempChannelRecord.getOwnerUserId()) {
-                            interaction.createImmediateResponder().setContent("あなたは通話管理者ではありません。").setFlags(MessageFlag.EPHEMERAL).respond();
+                            interaction.createImmediateResponder().addEmbed(errorEmbedCreate.create(ErrorNumber.NOT_MANAGE)).setFlags(MessageFlag.EPHEMERAL).setFlags(MessageFlag.EPHEMERAL).respond();
                             break;
                         }
                         ServerDataRecord mentionRecord = dao.getMentionData(interaction.getServer().get().getId());
@@ -170,7 +172,7 @@ public class InfoMessageSystem extends SystemMaster {
                     }
                     case "remove-recruiting" -> {
                         if (interaction.getUser().getId() != tempChannelRecord.getOwnerUserId()) {
-                            interaction.createImmediateResponder().setContent("あなたは通話管理者ではありません。").setFlags(MessageFlag.EPHEMERAL).respond();
+                            interaction.createImmediateResponder().addEmbed(errorEmbedCreate.create(ErrorNumber.NOT_MANAGE)).setFlags(MessageFlag.EPHEMERAL).setFlags(MessageFlag.EPHEMERAL).respond();
                             break;
                         }
                         ServerDataRecord mentionRecord = dao.getMentionData(interaction.getServer().get().getId());
@@ -182,28 +184,28 @@ public class InfoMessageSystem extends SystemMaster {
                                 }
                             }
                             dao.deleteMentionMessage(tempChannelRecord.getTextChannelId());
-                            interaction.createImmediateResponder().respond();
+                            interaction.createImmediateResponder().setFlags(MessageFlag.EPHEMERAL).addEmbed(resultEmbedCreate.create(ResultNumber.COMPLETION, "募集メッセージ全削除")).respond();
                         }
                     }
                     case "claim" -> {
                         if (interaction.getUser().getId() == tempChannelRecord.getOwnerUserId()) {
-                            interaction.createImmediateResponder().setContent("あなたはすでに通話管理者です。").setFlags(MessageFlag.EPHEMERAL).respond();
+                            interaction.createImmediateResponder().addEmbed(errorEmbedCreate.create(ErrorNumber.NOT_MANAGE)).setFlags(MessageFlag.EPHEMERAL).setFlags(MessageFlag.EPHEMERAL).respond();
                             break;
                         }
                         Server server = interaction.getServer().get();
                         if (server.getVoiceChannelById(tempChannelRecord.getVoiceChannelId()).isPresent() && server.getVoiceChannelById(tempChannelRecord.getVoiceChannelId()).get().getConnectedUserIds().contains(tempChannelRecord.getOwnerUserId())) {
-                            interaction.createImmediateResponder().setContent("通話管理者が通話にいらっしゃいます。").setFlags(MessageFlag.EPHEMERAL).respond();
+                            interaction.createImmediateResponder().addEmbed(errorEmbedCreate.create("通話管理者が通話にいらっしゃいます")).setFlags(MessageFlag.EPHEMERAL).respond();
                             break;
                         }
                         dao.updateTempChannelOwner(interaction.getUser().getId(), tempChannelRecord.getVoiceChannelId());
-                        interaction.getMessage().createUpdater().setContent(processing.rePressInfoMessage(interaction.getUser(), tempChannelRecord.isHideBy(), tempChannelRecord.isLockBy())).applyChanges().join();
+                        interaction.getMessage().createUpdater().setEmbed(processing.rePressInfoMessage(interaction.getUser(), tempChannelRecord.isHideBy(), tempChannelRecord.isLockBy())).applyChanges().join();
                         if (server.getVoiceChannelById(tempChannelRecord.getVoiceChannelId()).isPresent()) {
                             server.getVoiceChannelById(tempChannelRecord.getVoiceChannelId()).get().createUpdater().addPermissionOverwrite(interaction.getUser(), processing.getChannelManagePermission()).update();
                         }
                         if (server.getTextChannelById(tempChannelRecord.getTextChannelId()).isPresent()) {
                             server.getTextChannelById(tempChannelRecord.getTextChannelId()).get().createUpdater().addPermissionOverwrite(interaction.getUser(), processing.getChannelManagePermission()).update();
                         }
-                        interaction.createImmediateResponder().setFlags(MessageFlag.EPHEMERAL).setContent("通話管理者になりました。").respond();
+                        interaction.createImmediateResponder().setFlags(MessageFlag.EPHEMERAL).addEmbed(resultEmbedCreate.create(ResultNumber.COMPLETION, "通話管理者になりました")).respond();
                     }
                 }
 

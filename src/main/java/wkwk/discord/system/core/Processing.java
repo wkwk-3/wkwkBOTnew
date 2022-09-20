@@ -1,5 +1,6 @@
 package wkwk.discord.system.core;
 
+import org.javacord.api.entity.message.embed.EmbedBuilder;
 import org.javacord.api.entity.permission.PermissionType;
 import org.javacord.api.entity.permission.Permissions;
 import org.javacord.api.entity.permission.PermissionsBuilder;
@@ -47,13 +48,14 @@ public class Processing {
                 .build();
     }
 
-    public String rePressInfoMessage(User user, boolean hideBy, boolean lockBy) {
-        String infoMessage = """
-                チャンネル管理者 : &mention&
-                表示状態 : &hide&
-                ロック状態 : &lock&""";
-        return infoMessage.replaceFirst("&mention&", user.getMentionTag())
-                .replaceFirst("&hide&", hideBy ? "非表示中" : "表示中")
-                .replaceFirst("&lock&", lockBy ? "ロック中" : "アンロック中");
+    public EmbedBuilder rePressInfoMessage(User user, boolean hideBy, boolean lockBy) {
+        EmbedBuilder embedBuilder = new EmbedBuilder();
+        embedBuilder
+                .setTitle("通話設定")
+                .addInlineField("通話管理者", user.getDiscriminatedName())
+                .addInlineField("表示設定", hideBy ? "非表示中" : "表示中")
+                .addInlineField("ロック設定", lockBy ? "ロック中" : "アンロック中")
+                .setThumbnail(user.getAvatar());
+        return embedBuilder;
     }
 }

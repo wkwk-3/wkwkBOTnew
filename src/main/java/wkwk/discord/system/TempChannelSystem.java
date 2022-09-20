@@ -61,7 +61,7 @@ public class TempChannelSystem extends SystemMaster {
                                 .create().join();
                         textChannel.createUpdater().addPermissionOverwrite(event.getUser(), processing.getChannelManagePermission()).update();
                         record.setTextChannelId(textChannel.getId());
-                        record.setInfoMessageId(new MessageBuilder().setContent(processing.rePressInfoMessage(event.getUser(), record.isHideBy(), record.isLockBy())).addComponents(
+                        record.setInfoMessageId(new MessageBuilder().setEmbed(processing.rePressInfoMessage(event.getUser(), record.isHideBy(), record.isLockBy())).addComponents(
                                 ActionRow.of(Button.success("name", "通話名前変更"),
                                         Button.success("size", "通話人数変更"),
                                         Button.success("send-recruiting", "募集送信"),
