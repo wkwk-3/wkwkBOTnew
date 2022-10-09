@@ -70,30 +70,20 @@ public class SetUpTempChannelsDAO extends DAOBase {
         PreparedStatement preStatement = null;
         boolean isCheck = false;
         try {
-            String sql =
-                    "SELECT EXISTS(SELECT " + ServerPropertyParameters.MENTION_CHANNEL_ID.getParam()
+            String sql = "SELECT " + ServerPropertyParameters.MENTION_CHANNEL_ID.getParam()
+                    + "," + ServerPropertyParameters.FIRST_CHANNEL_ID.getParam()
+                    + "," + ServerPropertyParameters.VOICE_CATEGORY_ID.getParam()
+                    + "," + ServerPropertyParameters.TEXT_CATEGORY_ID.getParam()
                     + " FROM " + DAOParameters.TABLE_SERVER_PROPERTY.getParam() + " WHERE "
-                    + ServerPropertyParameters.SERVER_ID.getParam() + " = ?) AS mention_check,"
-                    + "(SELECT " + ServerPropertyParameters.FIRST_CHANNEL_ID.getParam()
-                    + " FROM " + DAOParameters.TABLE_SERVER_PROPERTY.getParam() + " WHERE "
-                    + ServerPropertyParameters.SERVER_ID.getParam() + " = ?) AS first_check,"
-                    + "(SELECT " + ServerPropertyParameters.VOICE_CATEGORY_ID.getParam()
-                    + " FROM " + DAOParameters.TABLE_SERVER_PROPERTY.getParam() + " WHERE "
-                    + ServerPropertyParameters.SERVER_ID.getParam() + " = ?) AS voice_check,"
-                    + "(SELECT " + ServerPropertyParameters.TEXT_CATEGORY_ID.getParam()
-                    + " FROM " + DAOParameters.TABLE_SERVER_PROPERTY.getParam() + " WHERE "
-                    + ServerPropertyParameters.SERVER_ID.getParam() + " = ?) AS text_check";
+                    + ServerPropertyParameters.SERVER_ID.getParam() + " = ?";
             preStatement = con.prepareStatement(sql);
             preStatement.setLong(1, id);
-            preStatement.setLong(2, id);
-            preStatement.setLong(3, id);
-            preStatement.setLong(4, id);
             ResultSet rs = preStatement.executeQuery();
             while (rs.next()) {
-                boolean mentionCheck = rs.getBoolean("mention_check");
-                boolean firstCheck = rs.getBoolean("first_check");
-                boolean voiceCheck = rs.getBoolean("voice_check");
-                boolean textCheck = rs.getBoolean("text_check");
+                boolean mentionCheck = rs.getLong(ServerPropertyParameters.MENTION_CHANNEL_ID.getParam()) != 0;
+                boolean firstCheck = rs.getLong(ServerPropertyParameters.FIRST_CHANNEL_ID.getParam()) != 0;
+                boolean voiceCheck = rs.getLong(ServerPropertyParameters.VOICE_CATEGORY_ID.getParam()) != 0;
+                boolean textCheck = rs.getLong(ServerPropertyParameters.TEXT_CATEGORY_ID.getParam()) != 0;
                 isCheck = mentionCheck || firstCheck || voiceCheck || textCheck;
             }
         } catch (SQLException e) {

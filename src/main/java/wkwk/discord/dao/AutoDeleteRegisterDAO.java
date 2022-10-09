@@ -34,10 +34,11 @@ public class AutoDeleteRegisterDAO extends DAOBase {
         }
         return isCheck;
     }
+
     public DeleteTimeRecord getDeleteTime(long textChanelId) {
         this.open();
         PreparedStatement preStatement = null;
-        DeleteTimeRecord record =  new DeleteTimeRecord();
+        DeleteTimeRecord record = new DeleteTimeRecord();
         try {
             String sql = "SELECT *"
                     + " FROM " + DAOParameters.TABLE_DELETE_TIMES.getParam()

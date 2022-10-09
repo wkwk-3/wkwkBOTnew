@@ -41,7 +41,7 @@ public class ErrorEmbedCreate {
             case ErrorNumber.NOT_MANAGE -> content.add("貴方は通話管理者ではありません。");
             case ErrorNumber.NOT_TEMP_CHANNEL -> content.add("一時通話チャンネル内でのみ使用可能です。");
             case ErrorNumber.UNKNOWN -> content.add("未知のエラーです。BOT管理者に問い合わせてください。");
-            default-> content.add("BOT管理者に問い合わせてください。");
+            default -> content.add("BOT管理者に問い合わせてください。");
         }
         return content;
     }

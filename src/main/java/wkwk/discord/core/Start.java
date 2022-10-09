@@ -25,6 +25,7 @@ public class Start {
         new WatchingSystem();
         new DeleteSelectSystem();
         new ReactionRoleSystem();
+        new TranslateSystem();
         // new testSystem();
         System.out.println(new BotInfoSystem().getInviteUrl(new PermissionsBuilder().setAllowed(PermissionType.ADMINISTRATOR).build()));
 
@@ -47,6 +48,18 @@ public class Start {
                     case "tp" -> {
 
                     }
+                    case "tc" -> {
+
+                        System.out.println("テストコマンド作成完了");
+                    }
+                    case "tcd" -> {
+
+                        System.out.println("テストコマンド削除完了");
+                    }
+                    case "tcs" -> {
+
+                    }
+
                     case "commandCreate" -> {
                         wkwkSlashCommand.createCommand();
                         System.out.println("Command新規作成完了");

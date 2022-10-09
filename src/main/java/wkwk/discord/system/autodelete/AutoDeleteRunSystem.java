@@ -14,6 +14,7 @@ public class AutoDeleteRunSystem extends SystemMaster {
     Timer timer;
 
     AutoDeleteRunDAO dao = new AutoDeleteRunDAO();
+
     public AutoDeleteRunSystem() {
         task = new TimerTask() {
             public void run() {

@@ -37,7 +37,7 @@ public class InfoMessageSystem extends SystemMaster {
             String customId = interaction.getCustomId();
             if (interaction.getServer().isPresent() && interaction.getChannel().isPresent()) {
                 InfoMessageDAO dao = new InfoMessageDAO();
-                TempChannelRecord tempChannelRecord =  dao.getTempChannelData(interaction.getChannel().get().getId());
+                TempChannelRecord tempChannelRecord = dao.getTempChannelData(interaction.getChannel().get().getId());
                 Processing processing = new Processing();
                 switch (customId) {
                     case "hide" -> {
@@ -179,7 +179,7 @@ public class InfoMessageSystem extends SystemMaster {
                         if (tempChannelRecord.getOwnerUserId() == interaction.getUser().getId() && interaction.getServer().get().getTextChannelById(mentionRecord.getMentionChannelId()).isPresent()) {
                             ArrayList<MessageRecord> mentionList = dao.getMentionMessage(interaction.getChannel().get().getId());
                             for (MessageRecord messageRecord : mentionList) {
-                                if (api.getMessageByLink(messageRecord.getLink()).isPresent()){
+                                if (api.getMessageByLink(messageRecord.getLink()).isPresent()) {
                                     api.getMessageByLink(messageRecord.getLink()).get().join().delete();
                                 }
                             }

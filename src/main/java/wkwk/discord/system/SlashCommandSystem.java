@@ -39,7 +39,7 @@ public class SlashCommandSystem extends SystemMaster {
     // madeW
     public SlashCommandSystem() {
         SlashCommandDAO dao = new SlashCommandDAO();
-        api.addSlashCommandCreateListener(event ->{
+        api.addSlashCommandCreateListener(event -> {
             SlashCommandInteraction interaction = event.getSlashCommandInteraction();
             String cmd = interaction.getCommandName();
             User sendUser = interaction.getUser();
@@ -61,10 +61,10 @@ public class SlashCommandSystem extends SystemMaster {
                                                     long voiceCategoryId = interaction.getOptionByIndex(0).get().getOptionChannelValueByName("category").get().getId();
                                                     if (server.getChannelCategoryById(voiceCategoryId).isPresent()) {
                                                         dao.UpDataVoiceCategory(serverId, voiceCategoryId);
-                                                        interaction.createImmediateResponder().setFlags(MessageFlag.EPHEMERAL).setContent("<#"+ voiceCategoryId + ">を一時通話作成先カテゴリに設定しました。").respond();
+                                                        interaction.createImmediateResponder().setFlags(MessageFlag.EPHEMERAL).setContent("<#" + voiceCategoryId + ">を一時通話作成先カテゴリに設定しました。").respond();
                                                         break;
                                                     }
-                                                    interaction.createImmediateResponder().setFlags(MessageFlag.EPHEMERAL).setContent("<#"+ voiceCategoryId + ">はカテゴリではありません。").respond();
+                                                    interaction.createImmediateResponder().setFlags(MessageFlag.EPHEMERAL).setContent("<#" + voiceCategoryId + ">はカテゴリではありません。").respond();
                                                     break;
                                                 }
                                                 interaction.createImmediateResponder().setFlags(MessageFlag.EPHEMERAL).setContent("カテゴリを入力して下さい。").respond();
@@ -74,10 +74,10 @@ public class SlashCommandSystem extends SystemMaster {
                                                     long textCategoryId = interaction.getOptionByIndex(0).get().getOptionChannelValueByName("category").get().getId();
                                                     if (server.getChannelCategoryById(textCategoryId).isPresent()) {
                                                         dao.UpDataTextCategory(serverId, textCategoryId);
-                                                        interaction.createImmediateResponder().setFlags(MessageFlag.EPHEMERAL).setContent("<#"+ textCategoryId + ">を一時チャット作成先カテゴリに設定しました。").respond();
+                                                        interaction.createImmediateResponder().setFlags(MessageFlag.EPHEMERAL).setContent("<#" + textCategoryId + ">を一時チャット作成先カテゴリに設定しました。").respond();
                                                         break;
                                                     }
-                                                    interaction.createImmediateResponder().setFlags(MessageFlag.EPHEMERAL).setContent("<#"+ textCategoryId + ">はカテゴリではありません。").respond();
+                                                    interaction.createImmediateResponder().setFlags(MessageFlag.EPHEMERAL).setContent("<#" + textCategoryId + ">はカテゴリではありません。").respond();
                                                     break;
                                                 }
                                                 interaction.createImmediateResponder().setFlags(MessageFlag.EPHEMERAL).setContent("カテゴリを入力して下さい。").respond();
@@ -88,10 +88,10 @@ public class SlashCommandSystem extends SystemMaster {
                                                     long firstChannelId = interaction.getOptionByIndex(0).get().getOptionChannelValueByName("voiceChannel").get().getId();
                                                     if (server.getVoiceChannelById(firstChannelId).isPresent()) {
                                                         dao.UpDataFirstChannel(serverId, firstChannelId);
-                                                        interaction.createImmediateResponder().setFlags(MessageFlag.EPHEMERAL).setContent("<#"+ firstChannelId + ">を一時通話作成用チャンネルに設定しました。").respond();
+                                                        interaction.createImmediateResponder().setFlags(MessageFlag.EPHEMERAL).setContent("<#" + firstChannelId + ">を一時通話作成用チャンネルに設定しました。").respond();
                                                         break;
                                                     }
-                                                    interaction.createImmediateResponder().setFlags(MessageFlag.EPHEMERAL).setContent("<#"+ firstChannelId + ">は通話チャンネルではありません。").respond();
+                                                    interaction.createImmediateResponder().setFlags(MessageFlag.EPHEMERAL).setContent("<#" + firstChannelId + ">は通話チャンネルではありません。").respond();
                                                     break;
                                                 }
                                                 interaction.createImmediateResponder().setFlags(MessageFlag.EPHEMERAL).setContent("通話チャンネルを入力して下さい。").respond();
@@ -102,10 +102,10 @@ public class SlashCommandSystem extends SystemMaster {
                                                     long mentionChannelId = interaction.getOptionByIndex(0).get().getOptionChannelValueByName("textChannel").get().getId();
                                                     if (server.getTextChannelById(mentionChannelId).isPresent()) {
                                                         dao.UpDataMentionChannel(serverId, mentionChannelId);
-                                                        interaction.createImmediateResponder().setFlags(MessageFlag.EPHEMERAL).setContent("<#"+ mentionChannelId + ">を募集送信用チャンネルに設定しました。").respond();
+                                                        interaction.createImmediateResponder().setFlags(MessageFlag.EPHEMERAL).setContent("<#" + mentionChannelId + ">を募集送信用チャンネルに設定しました。").respond();
                                                         break;
                                                     }
-                                                    interaction.createImmediateResponder().setFlags(MessageFlag.EPHEMERAL).setContent("<#"+ mentionChannelId + ">はテキストチャンネルではありません。").respond();
+                                                    interaction.createImmediateResponder().setFlags(MessageFlag.EPHEMERAL).setContent("<#" + mentionChannelId + ">はテキストチャンネルではありません。").respond();
                                                     break;
                                                 }
                                                 interaction.createImmediateResponder().setFlags(MessageFlag.EPHEMERAL).setContent("テキストチャンネルを入力して下さい。").respond();
@@ -133,8 +133,8 @@ public class SlashCommandSystem extends SystemMaster {
                                                 if (interaction.getOptionByIndex(0).get().getOptionLongValueByName("num").isPresent()) {
                                                     long size = interaction.getOptionByIndex(0).get().getOptionLongValueByName("num").get();
                                                     if (-1 < size && size < 100) {
-                                                        dao.UpDataDefaultSize(serverId, (int)size);
-                                                        interaction.createImmediateResponder().setFlags(MessageFlag.EPHEMERAL).setContent("デフォルト人数を"+ size + "に設定しました。").respond();
+                                                        dao.UpDataDefaultSize(serverId, (int) size);
+                                                        interaction.createImmediateResponder().setFlags(MessageFlag.EPHEMERAL).setContent("デフォルト人数を" + size + "に設定しました。").respond();
                                                         break;
                                                     }
                                                     interaction.createImmediateResponder().setFlags(MessageFlag.EPHEMERAL).setContent("0 ~ 99の間で入力して下さい。").respond();
@@ -173,7 +173,7 @@ public class SlashCommandSystem extends SystemMaster {
                                                             messageRecord.setEmoji(emoji);
                                                             messageRecord.setServerId(serverId);
                                                             dao.setReactionRole(messageRecord);
-                                                            interaction.createImmediateResponder().setContent(reactionMessage.getLink() + "\nに対してリアクションロール`" + emoji +" to " + role.getName() + "`を設定しました。").setFlags(MessageFlag.EPHEMERAL).respond();
+                                                            interaction.createImmediateResponder().setContent(reactionMessage.getLink() + "\nに対してリアクションロール`" + emoji + " to " + role.getName() + "`を設定しました。").setFlags(MessageFlag.EPHEMERAL).respond();
                                                         }
                                                     } catch (NumberFormatException e) {
                                                         interaction.createImmediateResponder().setFlags(MessageFlag.EPHEMERAL).setContent("数字のみを入力してください。").respond();
@@ -191,11 +191,11 @@ public class SlashCommandSystem extends SystemMaster {
                                                         long messageId = Long.parseLong(interaction.getOptionByIndex(0).get().getOptionStringValueByName("messageId").get());
                                                         if (dao.getServerReactMessageSize(serverId) > 25) {
                                                             interaction.createImmediateResponder().setFlags(MessageFlag.EPHEMERAL).setContent("このサーバーは既に25件のリアクションロール先メッセージが設定されています。").respond();
-                                                        }else if (dao.CheckIfMessage(messageId)) {
+                                                        } else if (dao.CheckIfMessage(messageId)) {
                                                             interaction.createImmediateResponder().setFlags(MessageFlag.EPHEMERAL).setContent("既にそのメッセージは設定されています。").respond();
                                                         } else if (!target.getType().isTextChannelType()) {
                                                             interaction.createImmediateResponder().setFlags(MessageFlag.EPHEMERAL).setContent("テキストチャンネルを入力して下さい。").respond();
-                                                        }else if (target.asTextChannel().isPresent()
+                                                        } else if (target.asTextChannel().isPresent()
                                                                 && api.getServerTextChannelById(target.getId()).isPresent()
                                                                 && api.getServerTextChannelById(target.getId()).get().getServer().getId() == serverId
                                                                 && api.getMessageById(messageId, api.getServerTextChannelById(target.getId()).get()).join().isServerMessage()) {
@@ -219,7 +219,7 @@ public class SlashCommandSystem extends SystemMaster {
 
                                             case "namepreset" -> {
                                                 if (interaction.getOptionByIndex(0).isPresent()
-                                                        && interaction.getOptionByIndex(0).get().getOptionStringValueByName("name").isPresent()){
+                                                        && interaction.getOptionByIndex(0).get().getOptionStringValueByName("name").isPresent()) {
                                                     String namePreset = interaction.getOptionByIndex(0).get().getOptionStringValueByName("name").get();
                                                     if (dao.CheckIfNamePreset(namePreset)) {
                                                         interaction.createImmediateResponder().setFlags(MessageFlag.EPHEMERAL).setContent("その候補はすでに登録済みです。").respond();
@@ -281,7 +281,7 @@ public class SlashCommandSystem extends SystemMaster {
 
                                             case "stereo" -> {
                                                 if (interaction.getOptionByIndex(0).isPresent()
-                                                        && interaction.getOptionByIndex(0).get().getOptionStringValueByName("template").isEmpty()){
+                                                        && interaction.getOptionByIndex(0).get().getOptionStringValueByName("template").isEmpty()) {
                                                     interaction.createImmediateResponder().setFlags(MessageFlag.EPHEMERAL).setContent("募集テンプレートを入力して下さい。").respond();
                                                 } else {
                                                     String template = interaction.getOptionByIndex(0).get().getOptionStringValueByName("template").get();
@@ -343,9 +343,9 @@ public class SlashCommandSystem extends SystemMaster {
                                                     SelectMenuBuilder selectMenuBuilder = new SelectMenuBuilder().setCustomId("removeLogging").setPlaceholder("削除したいlog設定を選んでください").setMaximumValues(logRecord.size()).setMinimumValues(1);
                                                     for (LoggingRecord log : logRecord) {
                                                         if (api.getServerTextChannelById(log.getTargetChannelId()).isPresent() && log.getType().equals("chat")) {
-                                                            selectMenuBuilder.addOption(new SelectMenuOptionBuilder().setLabel(log.getType() + ":" + api.getServerTextChannelById(log.getTargetChannelId()).get().getName()).setValue(log.getType() + "," + log.getTextChannelId() + "," +  log.getTargetChannelId()).build());
+                                                            selectMenuBuilder.addOption(new SelectMenuOptionBuilder().setLabel(log.getType() + ":" + api.getServerTextChannelById(log.getTargetChannelId()).get().getName()).setValue(log.getType() + "," + log.getTextChannelId() + "," + log.getTargetChannelId()).build());
                                                         } else if (api.getServerTextChannelById(log.getTargetChannelId()).isPresent() && log.getType().equals("user")) {
-                                                            selectMenuBuilder.addOption(new SelectMenuOptionBuilder().setLabel(log.getType() + ":" + api.getServerTextChannelById(log.getTargetChannelId()).get().getName()).setValue(log.getType() + "," +  log.getTextChannelId()).build());
+                                                            selectMenuBuilder.addOption(new SelectMenuOptionBuilder().setLabel(log.getType() + ":" + api.getServerTextChannelById(log.getTargetChannelId()).get().getName()).setValue(log.getType() + "," + log.getTextChannelId()).build());
                                                         } else if (api.getServerTextChannelById(log.getTargetChannelId()).isEmpty()) {
                                                             selectMenuBuilder.addOption(new SelectMenuOptionBuilder().setLabel(log.getType() + ":" + log.getTargetChannelId()).setValue(log.getTextChannelId() + " " + log.getType() + " " + log.getTextChannelId()).build());
                                                         }
@@ -372,10 +372,9 @@ public class SlashCommandSystem extends SystemMaster {
                                                 interaction.createImmediateResponder().setFlags(MessageFlag.EPHEMERAL).setContent("時間の単位を入力して下さい。").respond();
                                             } else if (
                                                     switch (subCommandGroup.getOptionStringValueByName("unit").get()) {
-                                                        case "s", "m", "h", "d","S", "M", "H", "D" -> false;
+                                                        case "s", "m", "h", "d", "S", "M", "H", "D" -> false;
                                                         default -> true;
-                                                    })
-                                            {
+                                                    }) {
                                                 interaction.createImmediateResponder().setFlags(MessageFlag.EPHEMERAL).setContent("単位は`s m h d`のいずれかを入力して下さい。").respond();
                                             } else if (!(interaction.getChannel().get().getType().isServerChannelType() && interaction.getChannel().get().getType().isTextChannelType())) {
                                                 interaction.createImmediateResponder().setFlags(MessageFlag.EPHEMERAL).setContent("このサーバーのテキストチャンネルを選択してください。").respond();
@@ -391,7 +390,7 @@ public class SlashCommandSystem extends SystemMaster {
                                                 deleteTimeRecord.setUnit(subCommandGroup.getOptionStringValueByName("unit").get());
                                                 dao.setDeleteTime(deleteTimeRecord);
                                                 interaction.createImmediateResponder().setFlags(MessageFlag.EPHEMERAL).setContent(subCommandGroup.getOptionLongValueByName("time").get() + switch (subCommandGroup.getOptionStringValueByName("unit").get()) {
-                                                    case "s","S" -> "秒";
+                                                    case "s", "S" -> "秒";
                                                     case "m", "M" -> "分";
                                                     case "h", "H" -> "時間";
                                                     case "d", "D" -> "日";
@@ -426,8 +425,10 @@ public class SlashCommandSystem extends SystemMaster {
                                     StringBuilder chatLogging = new StringBuilder();
                                     for (LoggingRecord loggingRecord : loggingRecords) {
                                         switch (loggingRecord.getType()) {
-                                            case "user" -> userLogging.append("・<#").append(loggingRecord.getTextChannelId()).append(">\n");
-                                            case "chat" -> chatLogging.append("・<#").append(loggingRecord.getTextChannelId()).append("> `to` <#").append(loggingRecord.getTargetChannelId()).append(">").append("\n");
+                                            case "user" ->
+                                                    userLogging.append("・<#").append(loggingRecord.getTextChannelId()).append(">\n");
+                                            case "chat" ->
+                                                    chatLogging.append("・<#").append(loggingRecord.getTextChannelId()).append("> `to` <#").append(loggingRecord.getTargetChannelId()).append(">").append("\n");
                                         }
                                     }
 
@@ -440,7 +441,7 @@ public class SlashCommandSystem extends SystemMaster {
                                                 .append(deleteTimeRecord.getTime())
                                                 .append(
                                                         switch (deleteTimeRecord.getUnit()) {
-                                                            case "s","S" -> "秒";
+                                                            case "s", "S" -> "秒";
                                                             case "m", "M" -> "分";
                                                             case "h", "H" -> "時間";
                                                             case "d", "D" -> "日";
@@ -627,9 +628,12 @@ public class SlashCommandSystem extends SystemMaster {
                     }
                     interaction.createImmediateResponder().setFlags(MessageFlag.EPHEMERAL).setContent(ping + "ms").respond();
                 }
-                case "invite" -> interaction.createImmediateResponder().setFlags(MessageFlag.EPHEMERAL).setContent("https://wkwk.tech/BT").respond();
-                case "guild" -> interaction.createImmediateResponder().setFlags(MessageFlag.EPHEMERAL).setContent("https://wkwk.tech/GL").respond();
-                case "help" -> interaction.createImmediateResponder().setFlags(MessageFlag.EPHEMERAL).setContent("https://wkwk.tech/FUNC").respond();
+                case "invite" ->
+                        interaction.createImmediateResponder().setFlags(MessageFlag.EPHEMERAL).setContent("https://wkwk.tech/BT").respond();
+                case "guild" ->
+                        interaction.createImmediateResponder().setFlags(MessageFlag.EPHEMERAL).setContent("https://wkwk.tech/GL").respond();
+                case "help" ->
+                        interaction.createImmediateResponder().setFlags(MessageFlag.EPHEMERAL).setContent("https://wkwk.tech/FUNC").respond();
             }
         });
     }

@@ -25,7 +25,7 @@ public class WatchingSystemDAO extends DAOBase {
             preStatement.setLong(1, serverId);
             ResultSet rs = preStatement.executeQuery();
             while (rs.next()) {
-                FirstId =  rs.getLong(ServerPropertyParameters.FIRST_CHANNEL_ID.getParam());
+                FirstId = rs.getLong(ServerPropertyParameters.FIRST_CHANNEL_ID.getParam());
             }
         } catch (SQLException e) {
             e.printStackTrace();

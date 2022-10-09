@@ -1,8 +1,6 @@
 package wkwk.discord.command;
 
-import org.javacord.api.interaction.SlashCommand;
-import org.javacord.api.interaction.SlashCommandOption;
-import org.javacord.api.interaction.SlashCommandOptionType;
+import org.javacord.api.interaction.*;
 import wkwk.discord.system.core.SystemMaster;
 
 import java.util.Arrays;
@@ -13,6 +11,40 @@ public class WkwkSlashCommand extends SystemMaster {
     // madeW
 
     public void createCommand() {
+        System.out.println("translate");
+        SlashCommand.with("translate","Translate the message into the specified language and send it.",
+                        Arrays.asList(
+                                SlashCommandOption.create(SlashCommandOptionType.STRING,"text", "Text to be translated", true),
+                                SlashCommandOption.createWithChoices(SlashCommandOptionType.STRING,"Language", "Language after translation", true,
+                                        Arrays.asList(
+                                                SlashCommandOptionChoice.create("Bulgarian", "BG"),
+                                                SlashCommandOptionChoice.create("Czech", "CS"),
+                                                SlashCommandOptionChoice.create("Danish", "DA"),
+                                                SlashCommandOptionChoice.create("German", "DE"),
+                                                SlashCommandOptionChoice.create("Greek", "EL"),
+                                                SlashCommandOptionChoice.create("English (British)", "EN-GB"),
+                                                SlashCommandOptionChoice.create("English (American)", "EN-US"),
+                                                SlashCommandOptionChoice.create("Spanish", "ES"),
+                                                SlashCommandOptionChoice.create("Estonian", "ET"),
+                                                SlashCommandOptionChoice.create("Finnish", "FI"),
+                                                SlashCommandOptionChoice.create("French", "FR"),
+                                                SlashCommandOptionChoice.create("Hungarian", "HU"),
+                                                SlashCommandOptionChoice.create("Indonesian", "ID"),
+                                                SlashCommandOptionChoice.create("Italian", "IT"),
+                                                SlashCommandOptionChoice.create("Japanese", "JA"),
+                                                SlashCommandOptionChoice.create("Lithuanian", "LT"),
+                                                SlashCommandOptionChoice.create("Latvian", "LV"),
+                                                SlashCommandOptionChoice.create("Dutch", "NL"),
+                                                SlashCommandOptionChoice.create("Polish", "PL"),
+                                                SlashCommandOptionChoice.create("Portuguese (Brazilian)", "PT-BR"),
+                                                SlashCommandOptionChoice.create("Romanian", "RO"),
+                                                SlashCommandOptionChoice.create("Russian", "RU"),
+                                                SlashCommandOptionChoice.create("Turkish", "TR"),
+                                                SlashCommandOptionChoice.create("Ukrainian", "UK"),
+                                                SlashCommandOptionChoice.create("Chinese (simplified)", "ZH")
+                                        ))
+                        ))
+                .addDescriptionLocalization(DiscordLocale.JAPANESE, "指定した言語に翻訳してメッセージを送信します。").createGlobal(api).join();
         System.out.println("ping");
         SlashCommand.with("ping", "BOTの回線速度を計測").createGlobal(api).join();
         System.out.println("claim");
@@ -176,6 +208,10 @@ public class WkwkSlashCommand extends SystemMaster {
                         SlashCommandOption.create(SlashCommandOptionType.STRING, "text", "募集内容")
                 )
         ).createGlobal(api).join();
+        new MessageContextMenuBuilder()
+                .setName("translate")
+                .setDefaultEnabledForEveryone()
+                .createGlobal(api).join();
     }
 
     public void allDeleteCommands() {
@@ -183,12 +219,19 @@ public class WkwkSlashCommand extends SystemMaster {
         for (SlashCommand command : commands) {
             command.deleteGlobal();
         }
+
+        for (MessageContextMenu messageContextMenu : api.getGlobalMessageContextMenus().join()) {
+            messageContextMenu.deleteGlobal();
+        }
     }
 
     public void commandShow() {
         List<SlashCommand> commands = api.getGlobalSlashCommands().join();
         for (SlashCommand command : commands) {
             System.out.println(command.getName());
+        }
+        for (MessageContextMenu messageContextMenu : api.getGlobalMessageContextMenus().join()) {
+            System.out.println(messageContextMenu.getName());
         }
     }
 }

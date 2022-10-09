@@ -11,9 +11,9 @@ import org.javacord.api.interaction.InteractionBase;
 import org.javacord.api.interaction.SlashCommandInteraction;
 import wkwk.discord.dao.SetUpTempChannelsDAO;
 import wkwk.discord.record.ServerDataRecord;
+import wkwk.discord.system.core.SystemMaster;
 import wkwk.discord.system.core.errors.ErrorEmbedCreate;
 import wkwk.discord.system.core.errors.ErrorNumber;
-import wkwk.discord.system.core.SystemMaster;
 
 public class SetUpTempChannelsSystem extends SystemMaster {
     // madeW
@@ -23,14 +23,13 @@ public class SetUpTempChannelsSystem extends SystemMaster {
     public SetUpTempChannelsSystem() {
         // セットアップCommand
         api.addSlashCommandCreateListener(event -> {
-            SlashCommandInteraction interaction =  event.getSlashCommandInteraction();
+            SlashCommandInteraction interaction = event.getSlashCommandInteraction();
             if (interaction.getCommandName().equals("setup")) {
                 if (!interaction.getUser().isBot() && interaction.getServer().isPresent() && interaction.getServer().get().hasPermission(interaction.getUser(), PermissionType.ADMINISTRATOR)) {
                     if (dao.checkIfTempChannelData(interaction.getServer().get().getId())) {
                         interaction.createImmediateResponder()
                                 .addComponents(ActionRow.of(
-                                        Button.primary("temp_gene_yes", "YES"),
-                                        Button.danger("temp_gene_no", "NO")))
+                                        Button.primary("temp_gene_yes", "YES")))
                                 .setFlags(MessageFlag.EPHEMERAL).setContent("このサーバーはすでに一時通話作成用の要素が、\n一部もしくは全てが登録されています。\n本当に再生成いたしますか？")
                                 .respond();
                     } else {
@@ -56,8 +55,10 @@ public class SetUpTempChannelsSystem extends SystemMaster {
         });
     }
 }
-class TempChannelCreate{
+
+class TempChannelCreate {
     SetUpTempChannelsDAO dao = new SetUpTempChannelsDAO();
+
     protected void create(InteractionBase interaction) {
         Server server = interaction.getServer().get();
         ServerDataRecord old = dao.getServerData(server.getId());

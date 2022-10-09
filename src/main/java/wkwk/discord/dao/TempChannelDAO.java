@@ -29,7 +29,7 @@ public class TempChannelDAO extends DAOBase {
             preStatement.setLong(1, serverId);
             ResultSet rs = preStatement.executeQuery();
             while (rs.next()) {
-                FirstId =  rs.getLong(ServerPropertyParameters.FIRST_CHANNEL_ID.getParam());
+                FirstId = rs.getLong(ServerPropertyParameters.FIRST_CHANNEL_ID.getParam());
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -144,6 +144,7 @@ public class TempChannelDAO extends DAOBase {
         }
         return record;
     }
+
     public void deleteTempChannelData(long channelId) {
         this.open();
         PreparedStatement preStatement = null;
@@ -158,7 +159,8 @@ public class TempChannelDAO extends DAOBase {
             this.close(preStatement);
         }
     }
-    public long getOwnerUserId (long voiceChannelId) {
+
+    public long getOwnerUserId(long voiceChannelId) {
         this.open();
         PreparedStatement preStatement = null;
         long ownerUserId = -1;
@@ -184,7 +186,7 @@ public class TempChannelDAO extends DAOBase {
     public ArrayList<MessageRecord> getMentionMessage(long voiceChanelId) {
         this.open();
         PreparedStatement preStatement = null;
-        ArrayList<MessageRecord> arrayList =  new ArrayList<>();
+        ArrayList<MessageRecord> arrayList = new ArrayList<>();
         try {
             String sql = "SELECT *"
                     + " FROM " + DAOParameters.TABLE_MENTION_MESSAGE.getParam()

@@ -408,9 +408,9 @@ public class SlashCommandDAO extends DAOBase {
             String sql = "SELECT EXISTS(SELECT " + LoggingParameters.SERVER_ID.getParam()
                     + " FROM " + DAOParameters.TABLE_LOGGING.getParam() + " WHERE "
                     + LoggingParameters.SERVER_ID.getParam() + " = ? " +
-                    "AND "+ LoggingParameters.CHANNEL_ID.getParam() + " = ? " +
-                    "AND "+ LoggingParameters.LOG_TYPE.getParam() + " = ? " +
-                    "AND "+ LoggingParameters.TARGET_CHANNEL_ID.getParam() + " = ? " +
+                    "AND " + LoggingParameters.CHANNEL_ID.getParam() + " = ? " +
+                    "AND " + LoggingParameters.LOG_TYPE.getParam() + " = ? " +
+                    "AND " + LoggingParameters.TARGET_CHANNEL_ID.getParam() + " = ? " +
                     ") AS logging_check";
             preStatement = con.prepareStatement(sql);
             preStatement.setLong(1, record.getServerId());
@@ -464,6 +464,7 @@ public class SlashCommandDAO extends DAOBase {
             this.close(preStatement);
         }
     }
+
     public void setDeleteTime(DeleteTimeRecord record) {
         this.open();
         PreparedStatement preStatement = null;
@@ -700,7 +701,7 @@ public class SlashCommandDAO extends DAOBase {
                     + "," + TempChannelsParameters.OWNER_USER_ID.getParam()
                     + " FROM "
                     + DAOParameters.TABLE_TEMP_CHANNEL.getParam()
-                    +" WHERE " + TempChannelsParameters.VOICE_CHANNEL_ID.getParam() + " = ?";
+                    + " WHERE " + TempChannelsParameters.VOICE_CHANNEL_ID.getParam() + " = ?";
             preStatement = con.prepareStatement(sql);
             preStatement.setLong(1, channelId);
             ResultSet rs = preStatement.executeQuery();

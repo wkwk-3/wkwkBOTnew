@@ -120,7 +120,8 @@ public class InfoMessageDAO extends DAOBase {
         }
         return record;
     }
-    public void setMentionMessage (MessageRecord record) {
+
+    public void setMentionMessage(MessageRecord record) {
         this.open();
         PreparedStatement preStatement = null;
         try {
@@ -142,7 +143,7 @@ public class InfoMessageDAO extends DAOBase {
     public ArrayList<MessageRecord> getMentionMessage(long textChanelId) {
         this.open();
         PreparedStatement preStatement = null;
-        ArrayList<MessageRecord> arrayList =  new ArrayList<>();
+        ArrayList<MessageRecord> arrayList = new ArrayList<>();
         try {
             String sql = "SELECT * "
                     + " FROM " + DAOParameters.TABLE_MENTION_MESSAGE.getParam()

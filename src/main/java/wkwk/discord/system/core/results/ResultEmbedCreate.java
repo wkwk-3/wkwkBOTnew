@@ -40,7 +40,7 @@ public class ResultEmbedCreate {
             case ResultNumber.COMPLETION -> content.add("完了。");
             case ResultNumber.UNFINISHED -> content.add("実行不可。");
             case ResultNumber.UNKNOWN -> content.add("未知のエラーです。BOT管理者に問い合わせてください。");
-            default-> content.add("BOT管理者に問い合わせてください。");
+            default -> content.add("BOT管理者に問い合わせてください。");
         }
         return content;
     }

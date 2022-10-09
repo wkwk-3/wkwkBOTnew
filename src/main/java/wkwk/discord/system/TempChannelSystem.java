@@ -22,6 +22,7 @@ import java.util.concurrent.CompletionException;
 public class TempChannelSystem extends SystemMaster {
     // madeW
     TempChannelDAO dao = new TempChannelDAO();
+
     public TempChannelSystem() {
         // 一時通話作成
         api.addServerVoiceChannelMemberJoinListener(event -> {
@@ -114,7 +115,7 @@ public class TempChannelSystem extends SystemMaster {
             }
         });
 
-        api.addServerVoiceChannelMemberJoinListener(event ->{
+        api.addServerVoiceChannelMemberJoinListener(event -> {
             ArrayList<TempChannelRecord> temps = dao.getTempChannels(event.getServer().getId());
             ArrayList<Long> deleteTargetVoiceIds = new ArrayList<>();
             for (TempChannelRecord record : temps) {
@@ -124,7 +125,7 @@ public class TempChannelSystem extends SystemMaster {
                     api.getServerVoiceChannelById(record.getVoiceChannelId()).get().delete();
                     ArrayList<MessageRecord> messageRecords = dao.getMentionMessage(record.getVoiceChannelId());
                     for (MessageRecord messageRecord : messageRecords) {
-                        if (api.getMessageByLink(messageRecord.getLink()).isPresent()){
+                        if (api.getMessageByLink(messageRecord.getLink()).isPresent()) {
                             api.getMessageByLink(messageRecord.getLink()).get().join().delete();
                         }
                     }
@@ -157,7 +158,7 @@ public class TempChannelSystem extends SystemMaster {
                     dao.deleteMentionMessage(record.getTextChannelId());
                 } else if (event.getChannel().getConnectedUserIds().size() > 0) {
                     TempChannelRecord record = dao.getTempChannelData(event.getChannel().getId());
-                    Server server =  event.getServer();
+                    Server server = event.getServer();
                     if (server.getVoiceChannelById(record.getVoiceChannelId()).isPresent()) {
                         server.getVoiceChannelById(record.getVoiceChannelId()).get().createUpdater().addPermissionOverwrite(event.getUser(), new PermissionsBuilder().setAllUnset().build()).update();
                     }

@@ -26,7 +26,7 @@ public class WatchingSystem extends SystemMaster {
         api.addServerVoiceChannelMemberJoinListener(serverVoiceChannelMemberJoinEvent -> {
             Server server = serverVoiceChannelMemberJoinEvent.getServer();
             if (!serverVoiceChannelMemberJoinEvent.getUser().isBot() && serverVoiceChannelMemberJoinEvent.getChannel().getId() == dao.getFirstChannelId(server.getId())
-                    && server.getTextChannelById(watchingSetting.getCreateWId()).isPresent() ) {
+                    && server.getTextChannelById(watchingSetting.getCreateWId()).isPresent()) {
                 ServerTextChannel wTextChannel = server.getTextChannelById(watchingSetting.getCreateWId()).get();
                 EmbedBuilder embed = new EmbedBuilder()
                         .setTitle("一時通話作成")
