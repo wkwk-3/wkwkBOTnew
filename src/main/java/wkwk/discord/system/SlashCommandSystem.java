@@ -6,6 +6,7 @@ import org.javacord.api.entity.channel.ServerChannel;
 import org.javacord.api.entity.channel.ServerTextChannel;
 import org.javacord.api.entity.channel.ServerVoiceChannel;
 import org.javacord.api.entity.channel.ServerVoiceChannelUpdater;
+import org.javacord.api.entity.emoji.KnownCustomEmoji;
 import org.javacord.api.entity.message.Message;
 import org.javacord.api.entity.message.MessageBuilder;
 import org.javacord.api.entity.message.MessageFlag;
@@ -372,7 +373,7 @@ public class SlashCommandSystem extends SystemMaster {
                                                 interaction.createImmediateResponder().setFlags(MessageFlag.EPHEMERAL).setContent("時間の単位を入力して下さい。").respond();
                                             } else if (
                                                     switch (subCommandGroup.getOptionStringValueByName("unit").get()) {
-                                                        case "s", "m", "h", "d", "S", "M", "H", "D" -> false;
+                                                        case "s", "m", "h", "d" -> false;
                                                         default -> true;
                                                     }) {
                                                 interaction.createImmediateResponder().setFlags(MessageFlag.EPHEMERAL).setContent("単位は`s m h d`のいずれかを入力して下さい。").respond();
@@ -390,12 +391,32 @@ public class SlashCommandSystem extends SystemMaster {
                                                 deleteTimeRecord.setUnit(subCommandGroup.getOptionStringValueByName("unit").get());
                                                 dao.setDeleteTime(deleteTimeRecord);
                                                 interaction.createImmediateResponder().setFlags(MessageFlag.EPHEMERAL).setContent(subCommandGroup.getOptionLongValueByName("time").get() + switch (subCommandGroup.getOptionStringValueByName("unit").get()) {
-                                                    case "s", "S" -> "秒";
-                                                    case "m", "M" -> "分";
-                                                    case "h", "H" -> "時間";
-                                                    case "d", "D" -> "日";
+                                                    case "s" -> "秒";
+                                                    case "m" -> "分";
+                                                    case "h" -> "時間";
+                                                    case "d" -> "日";
                                                     default -> "false";
                                                 } + "後にこのチャンネルではチャットが自動削除されます。").respond();
+                                            }
+                                        } else if ("vote".equals(subCommandGroup.getName())) {
+                                            if (subCommandGroup.getOptionStringValueByName("title").isPresent() && subCommandGroup.getOptionStringValueByName("emoji-1").isPresent()) {
+                                                VoteDataRecord voteDataRecord = new VoteDataRecord();
+                                                ArrayList<VoteRecord> voteRecords = new ArrayList<>();
+                                                voteDataRecord.setTitle(subCommandGroup.getOptionStringValueByName("title").get());
+                                                voteDataRecord.setServerId(serverId);
+                                                String[] options = subCommandGroup.getOptionStringValueByName("emoji-1").get().split(",");
+                                                VoteRecord voteRecord = new VoteRecord();
+                                                v
+                                                for (KnownCustomEmoji emoji : api.getServerById(serverId).get().getCustomEmojis()) {
+                                                    emoji.get
+                                                }
+                                                for (char emoji : options[0].toCharArray()) {
+                                                    if (EmojiManager.isEmoji(String.valueOf(emoji))) {
+
+                                                    }
+                                                    System.out.println(eomoji);
+                                                }
+                                                System.out.println(EmojiManager.isEmoji(options[0]));
                                             }
                                         }
                                     }
@@ -410,6 +431,8 @@ public class SlashCommandSystem extends SystemMaster {
                                                 dao.deleteDeleteTime(interaction.getChannel().get().getId());
                                                 interaction.createImmediateResponder().setFlags(MessageFlag.EPHEMERAL).setContent("このチャンネルの自動削除を停止しました。").respond();
                                             }
+                                        } else if ("vote".equals(subCommandGroup.getName())) {
+                                            // test
                                         }
                                     }
                                 }
@@ -441,10 +464,10 @@ public class SlashCommandSystem extends SystemMaster {
                                                 .append(deleteTimeRecord.getTime())
                                                 .append(
                                                         switch (deleteTimeRecord.getUnit()) {
-                                                            case "s", "S" -> "秒";
-                                                            case "m", "M" -> "分";
-                                                            case "h", "H" -> "時間";
-                                                            case "d", "D" -> "日";
+                                                            case "s" -> "秒";
+                                                            case "m" -> "分";
+                                                            case "h" -> "時間";
+                                                            case "d" -> "日";
                                                             default -> "アンノウン";
                                                         }
                                                 )

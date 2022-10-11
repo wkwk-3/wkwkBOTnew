@@ -2,6 +2,7 @@ package wkwk.discord.core;
 
 import org.javacord.api.entity.permission.PermissionType;
 import org.javacord.api.entity.permission.PermissionsBuilder;
+import wkwk.deepl.WebSystem;
 import wkwk.discord.command.WkwkSlashCommand;
 import wkwk.discord.system.*;
 import wkwk.discord.system.autodelete.AutoDeleteRegisterSystem;
@@ -14,6 +15,8 @@ import java.io.InputStreamReader;
 public class Start {
     // madeW
     public static void main(String[] args) {
+
+        new WebSystem();
         new JoinAndLeaveServerSystem();
         new SetUpTempChannelsSystem();
         new TempChannelSystem();
@@ -49,11 +52,11 @@ public class Start {
 
                     }
                     case "tc" -> {
-
+                        wkwkSlashCommand.createTestCommand();
                         System.out.println("テストコマンド作成完了");
                     }
                     case "tcd" -> {
-
+                        wkwkSlashCommand.deleteTestCommand();
                         System.out.println("テストコマンド削除完了");
                     }
                     case "tcs" -> {
