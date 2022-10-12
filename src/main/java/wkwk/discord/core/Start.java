@@ -81,7 +81,8 @@ public class Start {
                         System.out.println("\n");
                         wkwkSlashCommand.commandShow();
                     }
-                    case "invite" -> System.out.println(new BotInfoSystem().getInviteUrl(new PermissionsBuilder().setAllowed(PermissionType.ADMINISTRATOR).build()));
+                    case "invite" ->
+                            System.out.println(new BotInfoSystem().getInviteUrl(new PermissionsBuilder().setAllowed(PermissionType.ADMINISTRATOR).build()));
                 }
             }
         } catch (IOException e) {

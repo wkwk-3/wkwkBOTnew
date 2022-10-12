@@ -10,5 +10,6 @@ public class VoteDataRecord {
     long messageId;
     long allVotes;
     String title;
+    String description;
     ArrayList<VoteRecord> voteRecords;
 }

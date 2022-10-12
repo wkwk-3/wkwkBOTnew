@@ -12,10 +12,10 @@ public class WkwkSlashCommand extends SystemMaster {
 
     public void createCommand() {
         System.out.println("translate");
-        SlashCommand.with("translate","Translate the message into the specified language and send it.",
+        SlashCommand.with("translate", "Translate the message into the specified language and send it.",
                         Arrays.asList(
-                                SlashCommandOption.create(SlashCommandOptionType.STRING,"text", "Text to be translated", true),
-                                SlashCommandOption.createWithChoices(SlashCommandOptionType.STRING,"Language", "Language after translation", true,
+                                SlashCommandOption.create(SlashCommandOptionType.STRING, "text", "Text to be translated", true),
+                                SlashCommandOption.createWithChoices(SlashCommandOptionType.STRING, "Language", "Language after translation", true,
                                         Arrays.asList(
                                                 SlashCommandOptionChoice.create("Bulgarian", "BG"),
                                                 SlashCommandOptionChoice.create("Czech", "CS"),
@@ -180,10 +180,10 @@ public class WkwkSlashCommand extends SystemMaster {
                                         SlashCommandOption.create(SlashCommandOptionType.LONG, "time", "削除までの時間", true),
                                         SlashCommandOption.createWithChoices(SlashCommandOptionType.STRING, "unit", "時間の単位", true,
                                                 Arrays.asList(
-                                                        SlashCommandOptionChoice.create("秒後","s"),
-                                                        SlashCommandOptionChoice.create("分後","m"),
-                                                        SlashCommandOptionChoice.create("時間後","h"),
-                                                        SlashCommandOptionChoice.create("日後","d")
+                                                        SlashCommandOptionChoice.create("秒後", "s"),
+                                                        SlashCommandOptionChoice.create("分後", "m"),
+                                                        SlashCommandOptionChoice.create("時間後", "h"),
+                                                        SlashCommandOptionChoice.create("日後", "d")
                                                 ))
                                 )
                         ),
@@ -212,7 +212,7 @@ public class WkwkSlashCommand extends SystemMaster {
                                         SlashCommandOption.create(SlashCommandOptionType.STRING, "emoji-20", "絵文字,Text"),
                                         SlashCommandOption.create(SlashCommandOptionType.STRING, "emoji-21", "絵文字,Text"),
                                         SlashCommandOption.create(SlashCommandOptionType.STRING, "emoji-22", "絵文字,Text"),
-                                        SlashCommandOption.create(SlashCommandOptionType.STRING, "emoji-23", "絵文字,Text"),
+                                        SlashCommandOption.create(SlashCommandOptionType.STRING, "description", "投票の説明がある場合はここ"),
                                         SlashCommandOption.create(SlashCommandOptionType.ATTACHMENT, "image", "添付画像")
                                 )
                         )

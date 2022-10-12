@@ -2,7 +2,10 @@ package wkwk.discord.dao.core;
 
 import wkwk.discord.parameter.DAOParameters;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.sql.Statement;
 
 public class DAOBase {
     // madeW

@@ -7,6 +7,6 @@ public class LoggingRecord {
     // madeW
     private long serverId;
     private long textChannelId;
-    private String type ;
+    private String type;
     private long targetChannelId;
 }

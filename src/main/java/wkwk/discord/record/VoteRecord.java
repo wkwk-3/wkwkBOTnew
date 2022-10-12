@@ -4,7 +4,9 @@ import lombok.Data;
 
 @Data
 public class VoteRecord {
-    String unicodeEmoji;
+    String emojiText;
+    long emojiId;
+    String emojiType;
     String voteText;
     long votes;
 }
